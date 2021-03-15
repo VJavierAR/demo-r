@@ -57,7 +57,7 @@ class compras(models.Model):
     active = fields.Boolean('Active', default=True, track_visibility=True)
     requisicion=fields.Many2one('requisicion.requisicion')
     x_studio_arreglo=fields.Char()
-    x_studio_field_H9kGQ=fields.One2many('account.move','purchase_id')
+    x_studio_field_H9kGQ=fields.One2many('account.invoice','purchase_id')
     @api.depends('x_studio_field_H9kGQ','state')
     def pay(self):
         pago=False
