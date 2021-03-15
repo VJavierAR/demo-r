@@ -12,7 +12,7 @@ class StockQuan(Model):
     _inherit = 'stock.quant'
     quants_registro=fields.One2many('stock.quant.line','quant_id')
     regla=fields.Many2one('stock.warehouse.orderpoint')
-
+    x_studio_field_kUc4x=fields.Many2one('x_ubicacion_inventario')
     @api.model
     def _unlink_zero_quants(self):
         """ _update_available_quantity may leave quants with no
