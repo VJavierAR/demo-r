@@ -10,8 +10,6 @@
     "author": "Tecnativa, Odoo Community Association (OCA)",
     "maintainers": ["Yajo"],
     "license": "AGPL-3",
-    "application": False,
-    "installable": True,
     "depends": [
         "base",
     ],

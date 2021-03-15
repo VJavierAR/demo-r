@@ -15,7 +15,6 @@
     "data": ["views/ir_actions_report.xml", "templates/assets.xml"],
     "installable": True,
     "maintainers": ["kittiu"],
-        'installable': True,
     'application': True,
     'auto_install': False,
 }
