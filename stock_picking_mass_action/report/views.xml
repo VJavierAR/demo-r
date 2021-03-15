@@ -280,8 +280,8 @@
     <report id="studio_customization.transferir_reporte_4541ad13-9ccb-4a0f-9758-822064db7c9a" string="Etiquetas" model="stock.picking" report_type="qweb-pdf" name="stock_picking_mass_action.report_custom_template"/>
     <template id="studio_customization.transferir_reporte_4541ad13-9ccb-4a0f-9758-822064db7c9a_template">
       <t t-call="web.html_container">
+        <div class="page">
         <t t-foreach="docs" t-as="doc">
-        <div>
         <t t-set="norep" t-value="0"/>
         <t t-set="i" t-value="1"/>
         <t style="width:100%" t-foreach="doc.move_ids_without_package" t-as="move">
@@ -334,8 +334,8 @@
                 </t>
             </t>
         </t>
+    </t>
     </div>
-        </t>
     </t>
     </template>
 
