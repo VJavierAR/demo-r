@@ -1,0 +1,75 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="tfs.list">
+      <field name="name">tfs.form</field>
+      <field name="model">tfs.tfs</field>
+      <field name="arch" type="xml">
+<form>
+    <sheet>
+        <div>
+            <span>
+                <field name="name" readonly="1"/>
+            </span>
+        </div>
+        <group name="gral">
+            <group name="a">
+                <field name="tipo"/>
+                <field name="cliente"/>
+                <field name="localidad"/>
+            </group>
+            <group name="b">
+                <field name="usuario" invisible="1"/>
+                <field name="almacen"  invisible="1"/>
+                <field name='serie' domain="[['x_studio_ubicacion_id','=',domi]]" readonly="0"></field>
+                <field name="domi" invisible="1"/>
+                <field name='producto' domain="[['categ_id.name','=','Toner']]"></field>
+            </group>
+        </group>
+        <notebook name="notebookA">
+            <page name="Contadores" string="Contadores">
+                <group>
+                    <group name='c' string='Contadores Actuales'>
+                        <field name='actualMonocromatico'></field>
+                        <field name='actualColor'></field>
+                        <field name='actualporcentajeNegro'></field>
+                        <field name='actualporcentajeAmarillo'></field>
+                        <field name='actualporcentajeCian'></field>
+                        <field name='actualporcentajeMagenta'></field>
+                    </group>
+                    <group name='d' string='Contadores Anteriores'>
+                        <field name="contadorAnterior" invisible="1"/>
+                        <field name='contadorAnteriorMono'></field>
+                        <field name='contadorAnteriorColor'></field>
+                        <field name='porcentajeAnteriorNegro' widget="percentpie"></field>
+                        <field name='porcentajeAnteriorAmarillo' widget="percentpie"></field>
+                        <field name='porcentajeAnteriorCian' widget="percentpie"></field>
+                        <field name='porcentajeAnteriorMagenta' widget="percentpie"></field>
+                    </group>
+                </group>
+            </page>
+            <page name="evidencias" string="Evidencias">
+                <field name='evidencias'>
+                    <tree editable='bottom'>
+                        <field name='name'/>
+                        <field name='evidencia'/>
+                    </tree>
+                </field>
+            </page>
+            <page name="existencias" string="Existencias">
+                <field name="inventario" domain="[['lot_id','=',False]]"/>
+            </page>
+        </notebook>
+    </sheet>
+    <div class="oe_chatter">
+        <field name="message_follower_ids" widget="mail_followers"/>
+        <field name="activity_ids" widget="mail_activity"/>
+        <field name="message_ids" widget="mail_thread"/>
+    </div>
+</form>
+      
+      
+      </field>
+    </record>
+      
+  </data>
+</odoo>

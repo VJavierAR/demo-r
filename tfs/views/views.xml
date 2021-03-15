@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="tfs_list">
+      <field name="name">tfs.form</field>
+      <field name="model">tfs.tfs</field>
+      <field name="arch" type="xml">
+<form>
+    <header>
+        <button name="confirm" type="object" string="Confirmar" attrs="{'invisible': ['|','|',('id','=',False),('estado','=','xValidar'),('estado','=','Valido')]}"></button>
+        <button name="confirm" type="object" string="Autorizar" attrs="{'invisible': ['|','|',('id','=',False),('estado','=','xValidar'),('estado','=','Valido')]}"></button>
+
+        <field name="estado" widget="statusbar"/>
+    </header>
+    <sheet>
+        <div>
+            <span>
+                <field name="name" readonly="1"/>
+            </span>
+        </div>
+        <group name="gral">
+            <group name="1">
+                <field name="serie" domain="[]" readonly="0" edit="0"/>
+                <field name="colorBN" invisible="1"/>
+                <field name="productoNegro" domain="[['categ_id.name','=','Toner']]" />
+                <field name="productoCian" domain="[['categ_id.name','=','Toner']]" attrs="{'invisible': ['|',('colorBN','=','B/N'),('serie','=',False)]}"/>
+                <field name="productoAmarillo" domain="[['categ_id.name','=','Toner']]" attrs="{'invisible': ['|',('colorBN','=','B/N'),('serie','=',False)]}"/>
+                <field name="productoMagenta" domain="[['categ_id.name','=','Toner']]" attrs="{'invisible': ['|',('colorBN','=','B/N'),('serie','=',False)]}"/>
+            </group>
+            <group name="2">
+                <field name="usuario" invisible="1"/>
+                <field name="almacen" invisible="1"/>
+                <field name="cliente"/>
+                <field name="localidad"/>
+                <field name="direccion"/>
+                <field name="domi" invisible="1"/>
+            </group>
+        </group>
+        <group name="gral1">
+            <field name="actualMonocromatico" />
+            <field name="actualColor" attrs="{'invisible': ['|',('colorBN','=','B/N'),('serie','=',False)]}"/>
+        </group>
+        <notebook name="notebookA">
+            <page name="Contadores" string="Contadores">
+                <group>
+                    <group name="a"  string="Contadores Monocromatico">
+                        <field name="contadorMono" invisible="1"/>
+                        <field name="contadorAnteriorMono"/>
+                        <field name="nivelNegro" string='Nivel Monocromatico'/>
+                        <field name="actualporcentajeNegro" widget="percentpie"/>
+                        <field name="porcentajeAnteriorNegro" widget="percentpie"/>
+                    </group>
+                    <group name="b" string="Contadores Cian" attrs="{'invisible': ['|',('colorBN','=','B/N'),('serie','=',False)]}">
+                        <field name="contadorCian" invisible="1"/>
+                        <field name="nivelCian" string='Nivel Cian'/>
+                        <field name="contadorAnteriorCian"/>
+                        <field name="actualporcentajeCian" widget="percentpie"/>
+                        <field name="porcentajeAnteriorCian" widget="percentpie"/>
+                    </group>
+                </group>
+                <group>
+                    <group name="c" string="Contadores Amarillo" attrs="{'invisible': ['|',('colorBN','=','B/N'),('serie','=',False)]}">
+                        <field name="contadorAmarillo" invisible="1"/>
+                        <field name="contadorAnteriorAmarillo"/>
+                        <field name="nivelAmarillo" string='Nivel Amarillo'/>
+                        <field name="actualporcentajeAmarillo" widget="percentpie"/>
+                        <field name="porcentajeAnteriorAmarillo" widget="percentpie"/>
+                    </group>
+                    <group name="d" string="Contadores Magenta" attrs="{'invisible': ['|',('colorBN','=','B/N'),('serie','=',False)]}">
+                        <field name="contadorMagenta" invisible="1"/>
+                        <field name="contadorAnteriorMagenta"/>
+                        <field name="nivelMagenta" string='Nivel Magenta'/>
+                        <field name="actualporcentajeMagenta" widget="percentpie"/>
+                        <field name="porcentajeAnteriorMagenta" widget="percentpie"/>
+                    </group>
+                </group>
+            </page>
+            <page name="evidencias" string="Evidencias">
+                <field name="evidencias">
+                    <tree editable="bottom">
+                        <field name="name"/>
+                        <field name="evidencia"/>
+                    </tree>
+                </field>
+            </page>
+            <page name="existencias" string="Existencias">
+                <field name="inventario" domain="[['lot_id','=',False]]"/>
+            </page>
+        </notebook>
+    </sheet>
+    <div class="oe_chatter">
+        <field name="message_follower_ids" widget="mail_followers"/>
+        <field name="activity_ids" widget="mail_activity"/>
+        <field name="message_ids" widget="mail_thread"/>
+    </div>
+</form>
+     
+      </field>
+    </record>
+            
+      
+  </data>
+</odoo>

@@ -1,0 +1,2268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_helpdesk_comentario" model="ir.ui.view">
+        <field name="model">helpdesk.comentario</field>
+        <field name="arch" type="xml">
+            <form string="Creación de comentario">
+                <group>
+                    <group>
+                        <field name='ticket_id' string='Ticket' readonly='1'/>
+                        <field name="estado" readonly="1"/>
+                        <field name="comentario" attrs='{"readonly": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                    </group>
+                    <group>
+                        <field name="check" attrs='{"readonly": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                        <field name="evidencia" widget="many2many_binary" attrs='{"readonly": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                        <field name="ultimaEvidencia" force_save = "1" groups="studio_customization.grupo_de_tecnicos_fi_6cce8af2-f2d0-4449-b629-906fb2c16636" attrs='{"readonly": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                        <field name="editarZona" force_save = "1" groups="studio_customization.responsables_de_area_0126b8d9-62a9-425c-b125-0540213a8390" attrs='{"readonly": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                        <field name="zona" attrs='{"invisible": [["editarZona","=",False]]}' force_save = "1"/>
+                    </group>
+                </group>
+
+                <field name="diagnostico_id" options="{'no_create': True}" readonly="1">
+                    <tree>
+                        <field name="create_date" string='Creado el' readonly="1"/>
+                        <field name="estadoTicket" readonly="1"/>
+                        <field name="comentario" string='Diagnostico / Comentario'/>
+                        <field name="create_uid" readonly="1" string='Encargado'/>
+                        <field name="evidencia" widget="many2many_binary"/>
+                        <field name="mostrarComentario" />
+                        <field name='creadoPorSistema' />
+                    </tree>
+                    <form>
+                        <group>
+                            <group>
+                                <field name="ticketRelacion" can_create="true" can_write="true" modifiers="{}" invisible="1"/>
+                                <field name="estadoTicket" modifiers="{}" readonly="1"/>
+                                <field name="comentario" modifiers="{}"/>
+                            </group>
+                            <group>
+                                <field name="evidencia" can_create="true" can_write="true" modifiers="{}" widget="many2many_binary"/>
+                                <field name="mostrarComentario" modifiers="{}"/>
+                            </group>
+                        </group>
+                    </form>
+                </field>
+
+                <footer>
+                    <button name="creaComentario" string="Confirmar" type="object" class="oe_highlight" attrs='{"invisible": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_helpdesk_no_validar_con_comentario" model="ir.ui.view">
+        <field name="model">helpdesk.comentario.no.validar</field>
+        <field name="arch" type="xml">
+            <form string="No validar solicitud">
+                
+                <group>
+                    <group>
+                        <field name='idProductoEnSerie' invisible='1'/>
+                        <field name='listaDeCantidaes' force_save='1' readonly='1' invisible='1'/>
+                        <field name='serieTexto' readonly='1' />
+                        <field name='solicitud' readonly = '1'/>
+
+                        <field name='activarCompatibilidad' />
+                        <field name="productosACambiar" string="Productos " domain="[]" options="{'no_create_edit': True, 'no_create': True}" readonly='0' >
+                            <tree string="Product Variants" decoration-danger="type == 'product' and virtual_available&lt;0" decoration-info="type != 'product' or virtual_available&gt;=0" editable="bottom" >
+                                <field name="create_uid" string="Creado por"  invisible="1" attrs="{'invisible': 1, 'readonly': 1}"/>
+                                <field name="x_studio_aadido_por" string="Añadido por"  invisible="1"  attrs="{'invisible': 1, 'readonly': 0}"/>
+                                <field name="x_studio_aadido_por_1" string="Añadido por" invisible="1" attrs="{'invisible': 1, 'readonly': 0}"/>
+                                <field name="x_studio_testuse" string="Prueba" invisible="1" attrs="{'invisible': 1, 'readonly': 1}"/>
+                                <field name="x_studio_field_Fj4xh" string="New Texto" invisible="1" attrs="{'invisible': 1, 'readonly': 1}"/>
+                                <field name="x_studio_currentuser" string="Usuario"  readonly="1" invisible="1" attrs="{'invisible': 0, 'readonly': 1}"/>
+                                <field name="categ_id" attrs="{}" readonly="1" required="1"/>
+                                <field name="default_code" attrs="{}" readonly="1"/>
+                                <field name="name" attrs="{}" readonly="1" required="1"/>
+                                <field name="attribute_value_ids" widget="many2many_tags" groups="product.group_product_variant" invisible="1"/>
+                                <field name="lst_price" attrs="{}" readonly="1" invisible="1"/>
+                                <field name="standard_price" attrs="{}" readonly="1" invisible="1"/>
+                                <field name="type" invisible="1" required="1"/>
+                                <field name="price" invisible="not context.get('pricelist',False)"/>
+                                <field name="qty_available" attrs="{'invisible':[('type', '!=', 'product')]}" readonly="1"/>
+                                <field name="virtual_available" attrs="{'invisible':[('type', '!=', 'product')]}" readonly="1"/>
+                                <field name="uom_id" options="{'no_open': True, 'no_create': True}" groups="uom.group_uom" attrs="{}" readonly="1" required="1" invisible="1"/>
+                                <field name="barcode" attrs="{}" invisible="1"/>
+                                <field name="x_studio_cantidad_pedida" string="Cantidad pedida" force_save='1'/>
+                                <field name="product_tmpl_id" invisible="1" required="1"/>
+                                <field name="active" invisible="1"/>
+                            </tree>
+                        </field>
+
+                    </group>
+                </group>
+                <group>
+                    <group>
+                        <field name="anadirComentario" force_save='1'/> 
+                    </group>
+                </group>
+                <group attrs="{'invisible': [['anadirComentario', '=', 0]]}">
+                    <group>
+                        <field name="estado" readonly="1"/>
+                        <field name="comentario" />
+                    </group>
+                    <group>
+                        <field name="check" />
+                        <field name="evidencia" widget="many2many_binary" />
+                        
+                    </group>
+                </group>
+
+                <field name="diagnostico_id" options="{'no_create': True}" readonly="1">
+                    <tree>
+                        <field name="create_date" string='Creado el' readonly="1"/>
+                        <field name="estadoTicket" readonly="1"/>
+                        <field name="comentario" string='Diagnostico / Comentario'/>
+                        <field name="create_uid" readonly="1" string='Encargado'/>
+                        <field name="evidencia" widget="many2many_binary"/>
+                        <field name="mostrarComentario" />
+                    </tree>
+                    <form>
+                        <group>
+                            <group>
+                                <field name="ticketRelacion" can_create="true" can_write="true" modifiers="{}" invisible="1"/>
+                                <field name="estadoTicket" modifiers="{}" readonly="1"/>
+                                <field name="comentario" modifiers="{}"/>
+                            </group>
+                            <group>
+                                <field name="evidencia" can_create="true" can_write="true" modifiers="{}" widget="many2many_binary"/>
+                                <field name="mostrarComentario" modifiers="{}"/>
+                            </group>
+                        </group>
+                    </form>
+                </field>
+
+                <footer>
+                    <button name="noValidarConComentario" string="No validar" type="object" class="oe_highlight" />
+                    <button string="Cerrar ventana" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+
+    <record id="view_helpdesk_resuleto_con_comentario" model="ir.ui.view">
+        <field name="model">helpdesk.comentario.resuelto</field>
+        <field name="arch" type="xml">
+            <form string="Pasando a resuleto ticket">
+                <group>
+                    <group>
+                        <field name="estado" readonly="1"/>
+                        <field name="comentario" attrs='{"readonly": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                    </group>
+                    <group>
+                        <field name="check" attrs='{"readonly": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                        <field name="evidencia" widget="many2many_binary" attrs='{"readonly": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                    </group>
+                </group>
+
+                <field name="diagnostico_id" options="{'no_create': True}" readonly="1">
+                    <tree>
+                        <field name="create_date" string='Creado el' readonly="1"/>
+                        <field name="estadoTicket" readonly="1"/>
+                        <field name="comentario" string='Diagnostico / Comentario'/>
+                        <field name="create_uid" readonly="1" string='Encargado'/>
+                        <field name="evidencia" widget="many2many_binary"/>
+                        <field name="mostrarComentario" />
+                    </tree>
+                    <form>
+                        <group>
+                            <group>
+                                <field name="ticketRelacion" can_create="true" can_write="true" modifiers="{}" invisible="1"/>
+                                <field name="estadoTicket" modifiers="{}" readonly="1"/>
+                                <field name="comentario" modifiers="{}"/>
+                            </group>
+                            <group>
+                                <field name="evidencia" can_create="true" can_write="true" modifiers="{}" widget="many2many_binary"/>
+                                <field name="mostrarComentario" modifiers="{}"/>
+                            </group>
+                        </group>
+                    </form>
+                </field>
+
+                <footer>
+                    <button name="resuletoTicketConComentario" string="Confirmar" type="object" class="oe_highlight" attrs='{"invisible": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+    <record id="view_helpdesk_cerrar_con_comentario" model="ir.ui.view">
+        <field name="model">helpdesk.comentario.cerrar</field>
+        <field name="arch" type="xml">
+            <form string="Cerrando ticket">
+                <group>
+                    <group>
+                        <field name="estado" readonly="1"/>
+                        <field name="comentario" attrs='{"readonly": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                    </group>
+                    <group>
+                        <field name="check" attrs='{"readonly": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                        <field name="evidencia" widget="many2many_binary" attrs='{"readonly": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                        
+                    </group>
+                </group>
+
+                <field name="diagnostico_id" options="{'no_create': True}" readonly="1">
+                    <tree>
+                        <field name="create_date" string='Creado el' readonly="1"/>
+                        <field name="estadoTicket" readonly="1"/>
+                        <field name="comentario" string='Diagnostico / Comentario'/>
+                        <field name="create_uid" readonly="1" string='Encargado'/>
+                        <field name="evidencia" widget="many2many_binary"/>
+                        <field name="mostrarComentario" />
+                    </tree>
+                    <form>
+                        <group>
+                            <group>
+                                <field name="ticketRelacion" can_create="true" can_write="true" modifiers="{}" invisible="1"/>
+                                <field name="estadoTicket" modifiers="{}" readonly="1"/>
+                                <field name="comentario" modifiers="{}"/>
+                            </group>
+                            <group>
+                                <field name="evidencia" can_create="true" can_write="true" modifiers="{}" widget="many2many_binary"/>
+                                <field name="mostrarComentario" modifiers="{}"/>
+                            </group>
+                        </group>
+                    </form>
+                </field>
+
+                <footer>
+                    <button name="cerrarTicketConComentario" string="Confirmar" type="object" class="oe_highlight" attrs='{"invisible": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+    <record id="view_helpdesk_cancelar_con_comentario" model="ir.ui.view">
+        <field name="model">helpdesk.comentario.cancelar</field>
+        <field name="arch" type="xml">
+            <form string="Cancelar ticket">
+                <group>
+                    <group>
+                        <field name="estado" readonly="1"/>
+                        <field name="comentario" attrs='{"readonly": [["estado","=","Cancelado"]]}'/>
+                    </group>
+                    <group>
+                        <field name="check" attrs='{"readonly": [["estado","=","Cancelado"]]}'/>
+                        <field name="evidencia" widget="many2many_binary" attrs='{"readonly": [["estado","=","Cancelado"]]}'/>
+                        
+                    </group>
+                </group>
+
+                <field name="diagnostico_id" options="{'no_create': True}" readonly="1">
+                    <tree>
+                        <field name="create_date" string='Creado el' readonly="1"/>
+                        <field name="estadoTicket" readonly="1"/>
+                        <field name="comentario" string='Diagnostico / Comentario'/>
+                        <field name="create_uid" readonly="1" string='Encargado'/>
+                        <field name="evidencia" widget="many2many_binary"/>
+                        <field name="mostrarComentario" />
+                    </tree>
+                    <form>
+                        <group>
+                            <group>
+                                <field name="ticketRelacion" can_create="true" can_write="true" modifiers="{}" invisible="1"/>
+                                <field name="estadoTicket" modifiers="{}" readonly="1"/>
+                                <field name="comentario" modifiers="{}"/>
+                            </group>
+                            <group>
+                                <field name="evidencia" can_create="true" can_write="true" modifiers="{}" widget="many2many_binary"/>
+                                <field name="mostrarComentario" modifiers="{}"/>
+                            </group>
+                        </group>
+                    </form>
+                </field>
+
+                <footer>
+                    <button name="cancelarTicketConComentario" string="Confirmar" type="object" class="oe_highlight" attrs='{"invisible": [["estado","=","Cancelado"]]}'/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+    <record id="view_helpdesk_contadores" model="ir.ui.view">
+        <field name="model">helpdesk.contadores</field>
+        <field name="arch" type="xml">
+            <form string="Agregar contadores">
+                <group>
+                    <group string="Contadores anteriores">
+                        <field name="contadorBNMesa" readonly="1"/>
+                        <field name="contadorColorMesa" readonly="1" attrs='{"invisible": [["bnColor", "=", "B/N"]]}'/>
+                        <field name="bnColor" readonly="1" />
+                        
+                    </group>
+                    <group string="Contador actual">
+                        <field name="contadorBNActual" id='contadorBNActual' widget="numeric_step" options="{'step': 1, 'min': 0}"/>
+                        <field name="contadorColorActual" id='contadorColorActual' attrs='{"invisible": [["bnColor", "=", "B/N"]]}' widget="numeric_step" options="{'step': 1, 'min': 0}"/>
+                    </group>
+                </group>
+                <!--<group attrs="{'invisible': ['|', &quot;&amp;&quot;, &quot;&amp;&quot;, ('bnColor', '=', 'B/N'),('contadorBNActual', '=', 0)]}">-->
+                <group>
+                    <group>
+                    </group>
+                    <group>
+                        <field name='textoInformativo' id='textoInformativo' readonly='1' widget='html' force_save='1'/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="modificarContadores" string="Confirmar" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_helpdesk_contacto" model="ir.ui.view">
+        <field name="model">helpdesk.contacto</field>
+        <field name="arch" type="xml">
+            <form string="Añadir contacto a localidad">
+
+                <group>
+                    <group>
+                        <field name="ticket_id" options='{"no_create_edit": True, "no_create": True, "no_open": True}' readonly='1' invisible='1' />
+                        <field name="idLocalidadAyuda" readonly='1' invisible='1' />
+                        <field name='editarContacto_check' />
+                    </group>
+                    <group>
+                        <field name="contactos" options='{"no_create_edit": True, "no_create": True, "no_open": True}' attrs="{'invisible': [ ('editarContacto_check', '=', False) ] }" />
+                    </group>
+                </group>
+
+                <group>
+                    <group>
+                        <field name="tipoDeDireccion" invisible='1' force_save = "1"/>
+                    </group>
+                </group>
+
+                <group attrs="{&quot;invisible&quot;: [[&quot;tipoDeDireccion&quot;,&quot;!=&quot;,&quot;contact&quot;]]}">
+                    <group>
+                        <field name="subtipo" invisible='1' force_save = "1"/>
+                        <field name="nombreDelContacto" required='1'/>
+                        <field name="titulo" placeholder="Por ejemplo, Sr." options="{'no_create_edit': True, 'no_create': True}" invisible='1'/>
+                        <field name="puestoDeTrabajo" placeholder="Por ejemplo, Director de ventas" invisible='1'/>
+                        <field name="correoElectronico"/>
+                        <field name="telefono"/>
+                        <field name="movil"/>
+                        <field name="notas" placeholder="Notas internas..."/>
+                    </group>
+                    <group>
+                        
+                    </group>
+                </group>
+
+                <group attrs="{&quot;invisible&quot;: [&quot;|&quot;,[&quot;tipoDeDireccion&quot;,&quot;=&quot;,&quot;contact&quot;],[&quot;tipoDeDireccion&quot;,&quot;=&quot;,False]]}">
+                    <group>
+                        <field name="direccionNombreCalle" placeholder='Nombre de la calle...'/>
+                        <field name="direccionNumeroExterior"/>
+                        <field name="direccionNumeroInterior"/>
+                        <field name="direccionColonia" placeholder='Colonia...'/>
+                        <field name="direccionLocalidad" placeholder='Localidad...'/>
+                        <field name="direccionPais" />
+                        <field name="direccionCiudad"/>
+                        <field name="direccionEstado" />
+                        <field name="direccionCodigoPostal" placeholder='Código Postal'/>
+                    </group>
+                    <group>
+                        <field name="nombreDelContacto" />
+                        <field name="correoElectronico"/>
+                        <field name="telefono"/>
+                        <field name="movil"/>
+                        <field name="notas" placeholder="Notas internas..."/>
+                        <field name="direccionZona" attrs="{&quot;invisible&quot;: [[&quot;tipoDeDireccion&quot;,&quot;!=&quot;,&quot;delivery&quot;]]}"/>
+                    </group>
+                </group>
+
+                <footer>
+                    <button name="agregarContactoALocalidad" string="Agregar contacto a localidad" type="object" class="oe_highlight" attrs="{'invisible': [ ('editarContacto_check', '=', True) ] }"/>
+
+                    <button name="editarContacto" string="Editar contacto" type="object" class="oe_highlight" attrs="{'invisible': [ ('editarContacto_check', '=', False) ] }" help="Editara el contacto con los datos capturados" />
+
+                    <!--
+                    <button name="archivarContacto" string="Archivar contacto" type="object" class="oe_highlight" attrs="{'invisible': [ ('editarContacto_check', '=', False) ] }" help="Archivara el contacto y ya no estara disponible para futuras selecciones"/>
+                    -->
+
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+    <record id="view_helpdesk_contacto_toner" model="ir.ui.view">
+        <field name="model">helpdesk.contacto.toner</field>
+        <field name="arch" type="xml">
+            <form string="Añadir contacto a localidad">
+                <group>
+                    <group>
+                        <field name="tipoDeDireccion" invisible='1' force_save = "1"/>
+                    </group>
+                </group>
+
+                <group attrs="{&quot;invisible&quot;: [[&quot;tipoDeDireccion&quot;,&quot;!=&quot;,&quot;contact&quot;]]}">
+                    <group>
+                        <field name="subtipo" invisible='1' force_save = "1"/>
+                        <field name="nombreDelContacto" required='1'/>
+                        <field name="titulo" placeholder="Por ejemplo, Sr." options="{'no_create_edit': True, 'no_create': True}" invisible='1'/>
+                        <field name="puestoDeTrabajo" placeholder="Por ejemplo, Director de ventas" invisible='1'/>
+                        <field name="correoElectronico"/>
+                        <field name="telefono"/>
+                        <field name="movil"/>
+                        <field name="notas" placeholder="Notas internas..."/>
+                    </group>
+                    <group>
+                        
+                    </group>
+                </group>
+
+                <group attrs="{&quot;invisible&quot;: [&quot;|&quot;,[&quot;tipoDeDireccion&quot;,&quot;=&quot;,&quot;contact&quot;],[&quot;tipoDeDireccion&quot;,&quot;=&quot;,False]]}">
+                    <group>
+                        <field name="direccionNombreCalle" placeholder='Nombre de la calle...'/>
+                        <field name="direccionNumeroExterior"/>
+                        <field name="direccionNumeroInterior"/>
+                        <field name="direccionColonia" placeholder='Colonia...'/>
+                        <field name="direccionLocalidad" placeholder='Localidad...'/>
+                        <field name="direccionPais" />
+                        <field name="direccionCiudad"/>
+                        <field name="direccionEstado" />
+                        <field name="direccionCodigoPostal" placeholder='Código Postal'/>
+                    </group>
+                    <group>
+                        <field name="nombreDelContacto" />
+                        <field name="correoElectronico"/>
+                        <field name="telefono"/>
+                        <field name="movil"/>
+                        <field name="notas" placeholder="Notas internas..."/>
+                        <field name="direccionZona" attrs="{&quot;invisible&quot;: [[&quot;tipoDeDireccion&quot;,&quot;!=&quot;,&quot;delivery&quot;]]}"/>
+                    </group>
+                </group>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <group>
+                    <group string='Buscar'>
+                        <!--<field name='serie' widget='many2many_tags' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" force_save = "1"/>-->
+
+                        <field name='dca'>
+                            <form>
+                                <group name="1">
+                                    <group name="a">
+                                        <field name="x_studio_link" string="link" wiget="html" invisible='1'/>
+                                        <field name="grupo" invisible='1'/>
+                                        <field name="serie" force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                        <field name='colorEquipo' force_save='1' readonly='1'/>
+                                        <field name='ultimaUbicacion' readonly='1' force_save='1'/>
+                                        <field name='equipo' readonly='1' force_save='1'/>
+                                        <field name="contadorMono" string = 'Contador Monocromático' force_save='1'/>
+                                        <field name="contadorAnteriorNegro" string = 'Contador de ultima solicitud negro' readonly = '1' force_save='1' />
+                                        <field name="contadorColor" string = 'Contador color' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" force_save='1' />
+                                        <field name='contadorAnteriorColor' string='Contador ultima solicitud color' readonly='1' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" force_save='1' />
+                                        
+                                        <field name='x_studio_cartuchonefro' string="Cartucho negro" domain="[&quot;&amp;&quot;,[&quot;categ_id&quot;,&quot;=&quot;,5],[&quot;x_studio_color&quot;,&quot;=&quot;,&quot;Negro&quot;],[&quot;x_studio_toner_compatible.id&quot;,&quot;=&quot;,x_studio_field_qYMJD]]" force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                        <field name="x_studio_rendimiento_negro" string="Rendimiento Negro" readonly='1' force_save='1' />
+                                        <field name="porcentajeNegro" string ='Porcentaje negro' force_save='1' />
+                                        
+                                        <field name='x_studio_cartucho_amarillo' domain='[ &quot;&amp;&quot;, ["categ_id", "=", 5], ["x_studio_color","=", "Amarillo"], ["x_studio_toner_compatible.id", "=", x_studio_field_qYMJD] ]' string = 'Cartucho amarillo' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                        <field name='x_studio_rendimientoa' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" readonly='1' string='Rendimiento Amarillo' force_save='1' />
+                                        <!--<field name='porcentajeAmarillo' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" string='Porcentaje Amarillo' force_save='1' />-->
+                                        
+                                        <field name='x_studio_cartucho_cian_1' domain="[&quot;&amp;&quot;,[&quot;categ_id&quot;,&quot;=&quot;,5],[&quot;x_studio_color&quot;,&quot;=&quot;,&quot;Cian&quot;],[&quot;x_studio_toner_compatible.id&quot;,&quot;=&quot;,x_studio_field_qYMJD]]" string ='Cartucho cian' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                        <field name='x_studio_rendimientoc' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" readonly='1' string = 'Rendimiento cian' force_save='1' />
+                                        <field name='porcentajeCian' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" string ='Porcentaje cian' force_save='1' />
+                                        
+                                        <field name='x_studio_cartucho_magenta' domain='[ &quot;&amp;&quot;, ["categ_id", "=", 5], ["x_studio_color","=", "Magenta"], ["x_studio_toner_compatible.id", "=", x_studio_field_qYMJD] ]' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }"  string = 'Cartucho magenta' force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                        <field name='x_studio_rendimientom' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" readonly='1' string = 'Rendimiento magenta' force_save='1' />
+                                        <field name='porcentajeMagenta' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" string ='Porcentaje magenta' force_save='1' />
+
+
+
+
+
+
+
+
+                                        <field name="x_studio_field_qYMJD" attrs="{}" invisible="1" force_save='1' />
+                                        
+                                        
+                                        <field name="x_studio_usuariocaptura" string="UsuarioCaptura" attrs="{}" invisible="1" force_save='1' />
+                                        <field name="x_studio_fecha" string="Fecha  " invisible='1' force_save='1' />
+                                        <!--<field name="x_studio_tiquete" string="Tiquete " invisible='1' force_save='1' />-->
+                                        <field name="x_studio_descripcion" string="Descripción" invisible='1' force_save='1' />
+                                        <field name="x_studio_cartucho_negro" string="cartucho negro" invisible='1' force_save='1' />
+                                        <field name="ubicacion" string="Ubicación" invisible='1' force_save='1' />
+                                        <field name="cartuchoNegro" invisible='1' force_save='1' />
+                                        <field name="respaldo" invisible='1' force_save='1' />
+                                        <field name="usb" string="USB" invisible='1' force_save='1' />
+                                        <field name="x_studio_toner" string="Tóner" invisible='1' force_save='1' />
+                                        <field name="ip" invisible='1' force_save='1' />
+                                        <field name="x_studio_tickett" string="Ticket Techra" invisible='1' force_save='1' />
+                                        <field name="fuente" invisible='1' force_save='1' />
+                                        <field name="x_studio_field_no6Rb" string="Fecha mes/año" invisible='1' force_save='1' />
+                                        <field name="x_studio_fecha_texto_anio" string="Fecha texto año" invisible='1' force_save='1' />
+                                        <field name="x_studio_fecha_techra" string="Fecha techra" invisible='1' force_save='1' />
+                                        <field name="x_studio_fuente_real" invisible='1' force_save='1' />
+                                        <field name="x_studio_mes" string="Mes" invisible='1' force_save='1' />
+                                    </group>
+                                    <group name="b">
+                                        
+                                        <field name="tablahtml" widget='html' force_save='1' readonly='1'/>
+
+
+
+                                        
+                                        <field name="x_studio_rendimiento" string="Rendimiento"  invisible='1'/>
+                                        <field name="x_studio_rendimiento_color" string="Rendimiento Color" invisible='1'/>
+                                        <field name="x_studio_toner_negro" string="Tóner Negro" invisible='1'/>
+                                        <field name="x_studio_toner_cian" string="Tóner Cian" invisible='1'/>
+                                        <field name="x_studio_toner_magenta" string="Tóner Magenta" invisible='1'/>
+                                        <field name="x_studio_toner_amarillo" string="Tóner Amarillo" invisible='1'/>
+                                        <field name="x_studio_robot" string="robot" attrs="{}" invisible='1'/>
+                                        <field name="x_studio_field_VYRwu" string="Resultado" invisible='1'/>
+                                        <field name="x_studio_hoja_de_estado_filename" invisible='1'/>
+                                        <field filename="x_studio_hoja_de_estado_filename" name="x_studio_hoja_de_estado" string="Hoja de estado" invisible='1'/>
+                                    </group>
+                                </group>
+                            </form>
+                            <tree string="DCAS">
+                                <field name="serie"/>
+                                <field name="tablahtml" widget='html'/>
+                            </tree>
+                        </field>
+                    </group>
+                    <!--
+                    <group string='Buscar por cliente y localidad'>
+                        
+                        <field name='clienteRelacion' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" attrs='{"domain": [["clienteRelacion.company_type","=","company"]]}' force_save = "1"/>
+                        <field name='localidadRelacion' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" domain='[["parent_id.id","=",idCliente],["type","=","delivery"]]' force_save = "1"/>
+                        <field name='contactoInterno' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" domain='[["parent_id.id", "=", idLocaliidad],["type", "=", "contact"]]' attrs='{"invisible": [["localidad","!=","CORPORATIVO"]]}' force_save = '1'/> 
+                    </group>
+                    -->
+                </group>
+
+                <group>
+                    <field name='textoTicketExistente' string='' widget='html' attrs="{'readonly': 1}"/>
+                    <field name='textoClienteMoroso' string='' widget='html' attrs="{'readonly': 1}"/>
+                </group>
+
+                <notebook>
+                    <page string = 'Pedido'>
+                        <group>
+                            <group>
+                                <field name='tipoReporte' force_save='1' />
+                                <field name='corte' force_save='1' />
+                                <!--<field name='almacen' force_save='1' />-->
+                                <!--
+                                <field name='almacenes' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" domain="['&amp;', ('x_studio_cliente', '=', False), '|', ('id', '=', 1), ('id', '=', 18) ]" />
+                                -->
+                                <field name='almacenes' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" domain="['|', '|', ('id', '=', 1), ('id', '=', 18), ('id', '=', 17) ]" />
+
+                            </group>
+                            <group>
+                                <field name='validarHastaAlmacenTicket' force_save='1' />
+                                <field name='validarTicket' force_save='1' />
+                                <field name='ponerTicketEnEspera' force_save='1' />
+                            </group>
+                        </group>
+                    </page>
+                    <page string = 'Cliente'>
+                        <group>
+                            <group>
+                                <field name='idClienteAyuda' invisible='0' force_save='1' />
+                                <field name='idLocalidadAyuda' invisible='0' force_save='1' />
+                                <field name='estatus' force_save='1' readonly='1' />
+                                <field name='editarCliente' force_save='1' />
+                                <field name='cliente' force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" attrs="{'readonly': [['editarCliente', '=', False]]}" />
+                                <field name='tipoCliente' force_save='1' readonly='1' />
+                                <field name='localidad' force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" attrs="{'readonly': [['editarCliente', '=', False]]}" domain='["&amp;",["parent_id.id", "=", idClienteAyuda],["type","=","delivery"]]' />    
+                            </group>
+                            <group>
+                                <field name='zonaLocalidad' force_save='1' attrs="{'readonly': [['editarCliente', '=', False]]}" />
+                                <field name='localidadContacto' force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" attrs="{'readonly': [['editarCliente', '=', False]]}" domain='["&amp;", "|",["parent_id.id","=",idLocalidadAyuda], ["parent_id.id","=",idClienteAyuda],["type","=","contact"]]' />
+
+
+
+                                <field name='estadoLocalidad' force_save='1' readonly='1'/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <button name="contacto_toner_wizard" string="Añadir contcto a localidad" icon="fa-user-plus" class="iconDiagnostico" type="object"  attrs='{"invisible": [["localidad","=", False]]}' groups=""/>
+                            </group>
+                        </group>
+
+                        <!--
+                        <group>
+                            <group>
+                                <button name='contacto_wizard' string='Añadir contacto a localidad' attrs="{'invisible': [['editarCliente', '=', False]]}" />
+                            </group>
+                        </group>
+                        -->
+                        <group>
+                            <group>
+                                <field name='telefonoContactoLocalidad' force_save='1' readonly='1'/>
+                                <field name='movilContactoLocalidad' force_save='1' readonly='1'/>
+                                <field name='correoContactoLocalidad' force_save='1' readonly='1'/>
+                            </group>
+                            <group>
+                                <field name='direccionLocalidad' force_save='1' readonly='1' widget='html'/>
+                            </group>
+                        </group>
+                    </page>
+                    <page string = 'Datos del ticket'>
+                        <group>
+                            <group>
+                                <field name='comentarioLocalidad' force_save='1'/>
+                            </group>
+                            <group>
+                                <field name='prioridad' force_save='1' widget='priority'/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name='numeroTicketCliente' />
+                            </group>
+                            <group>
+                                <field name='numeroTicketCliente' />
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+
+
+
+
+
+
+                <footer>
+                    <button name="agregarContactoALocalidad" string="Agregar contacto a localidad" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_helpdesk_alerta" model="ir.ui.view">
+        <field name="model">helpdesk.alerta</field>
+        <field name="arch" type="xml">
+            <form string="Alerta">
+                <group>
+                    <h3>
+                        <field name="mensaje" readonly='1'/>
+                    </h3>
+                </group>
+                <footer>
+                    <!--<button name='cerrar' string='Cerrar y continuar' type='object' class='oe_highlight' />-->
+                    <button special="cancel" string="Cerrar" class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_helpdesk_alerta_series" model="ir.ui.view">
+        <field name="model">helpdesk.alerta.series</field>
+        <field name="arch" type="xml">
+            <form string="Alerta">
+                <group>
+                    <h3>
+                        <field name="mensaje" readonly='1'/>
+                    </h3>
+                </group>
+                <group>
+                    <group>
+                        <field name='ticket_id_existente' readonly='1' invisible='1'/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="abrirTicket" string="Abrir ticket existente" type="object" class="oe_highlight" attrs="{'invisible': ['|',['ticket_id_existente','=', 0],['ticket_id_existente','=', False]]}"/>
+                    <!--<button name="abrirTicketCreado" string="Abrir ticket creado" type="object" class="oe_highlight"/>-->
+                    <button name="action_refresh" string="Ir a la lista" type="object" class="oe_highlight" />
+                    <button special="cancel" string="Regresar" class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_helpdesk_alerta_serie2" model="ir.ui.view">
+        <field name="model">helpdesk.alerta.series</field>
+        <field name="arch" type="xml">
+            <form string="Alerta">
+                <group>
+                    <h3>
+                        <field name="mensaje" readonly='1'/>
+                    </h3>
+                </group>
+                <footer>
+                    <button special="cancel" string="Cerrar" class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+
+    <record id="view_helpdesk_bitacora" model="ir.ui.view">
+        <field name="model">helpdesk.detalle.serie</field>
+        <field name="arch" type="xml">
+            <form string="Detalle serie">
+                <group class='text-center'>
+                    <h2>
+                        <field name="serie" string='' readonly="1"/>
+                    </h2>
+                </group>
+                <group>
+                    <notebook>
+                        <page string = 'Tickets'>
+                            <field name='html' widget='html' />
+                        </page>
+                        <!--
+                        <page string = 'Lecturas'>
+                            <field name='lecturas' />
+                        </page>
+                        -->
+                        <page string = 'Tóner'>
+                            <field name='toner' />
+                        </page>
+                        <page string = 'Historico de componentes'>
+                            <field name='historicoDeComponentes' options="{'no_create': True}" readonly="1" >
+                                <tree default_order='x_ultimaCargaRefacciones desc'>
+                                    <field name="create_date" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                                    <field name="write_uid" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea" attrs="{}"/>
+                                    <field name="write_date" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                                    <field name="create_uid"/>
+                                    <field name="x_studio_creado_por_script" string="Creado por script" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                                    <field name="x_ultimaCargaRefacciones" />
+                                    <field name="x_studio_field_MH4DO"/>
+                                    <field name="x_tipo"/>
+                                    <field name="x_studio_modelo"/>
+                                    <field name="x_studio_cantidad"/>
+                                    <field name="x_studio_fecha_de_entrega"/>
+                                    <field name="x_studio_ticket"/>
+                                    <field name="x_studio_contador_bn"/>
+                                    <field name="x_studio_contador_color" string="Contador Color"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="create_date" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                                        <field name="write_uid" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea" attrs="{}"/>
+                                        <field name="write_date" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                                        <field name="create_uid"/>
+                                        <field name="x_studio_creado_por_script" string="Creado por script" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                                        <field name="x_ultimaCargaRefacciones"/>
+                                        <field name="x_studio_field_MH4DO"/>
+                                    </group>
+                                    <group>
+                                        <field name="x_tipo"/>
+                                        <field name="x_studio_modelo"/>
+                                        <field name="x_studio_cantidad"/>
+                                        <field name="x_studio_fecha_de_entrega"/>
+                                        <field name="x_studio_ticket"/>
+                                        <field name="x_studio_contador_bn"/>
+                                        <field name="x_studio_contador_color" string="Contador Color"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string = 'H.Clientes'>
+                            <field name='movimientos' />
+                        </page>
+                    </notebook>
+                </group>
+                <footer>
+                    <button special="cancel" string="Cerrar" class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_helpdesk_crear_desde_serie" model="ir.ui.view">
+        <field name="model">helpdesk.crearconserie</field>
+        <field name="arch" type="xml">
+            <form string="Crear">
+                <group>
+                    <group>
+                        <field name='esProspecto' />
+                        <field name='tipoDeReporte' required='1'/>
+                    </group>
+                </group>
+                <group attrs='{"invisible": [["esProspecto", "=", True]] } '>
+                    <group string='Buscar por serie'>
+                        <field name='serie' widget='many2many_tags' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" force_save = "1"/>
+                    </group>
+                    <group string='Buscar por cliente y localidad'>
+                        <field name='clienteRelacion' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" domain='[["x_studio_activo_1", "=", True]]' force_save = "1" widget="res_partner_many2one" />
+                        <field name='localidadRelacion' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" domain='[["parent_id.id","=",idCliente],["type","=","delivery"]]' force_save = "1"/>
+                        <field name='contactoInterno' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" domain='["&amp;","|",["parent_id.id", "=", idLocaliidad], ["parent_id.id", "=", idCliente],["type", "=", "contact"]]' attrs='{"invisible": [["localidad","!=","Genesis Agrícola"]]}' force_save = '1'/>
+                        <!--<field name='localidadRelacion' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" domain='[["parent_id.id","=",idCliente],"|",["type","=","delivery"], ["type","=","contact"]]' force_save = "1"/>-->
+                    </group>
+                </group>
+                <group string='Información' attrs='{"invisible": [["esProspecto", "=", False]] } '>
+                    <group >
+                        <field name='clienteProspectoText' />
+                    </group>
+                    <group >
+                        <field name='comentarioClienteProspecto' />
+                    </group>
+                </group>
+                
+                <group attrs="{'invisible': ['|',['ticket_id_existente','=', 0],['ticket_id_existente','=', False]]}">
+                    <field name='textoTicketExistente' readonly='1' widget='html' force_save = "1"/>
+                    <field name='ticket_id_existente' invisible='1' readonly='1' force_save = "1"/>
+                </group>
+
+                <group attrs="{'invisible': [['estatus', '!=', 'Moroso']]}">
+                    <field name='textoClienteMoroso' readonly='1' widget='html' force_save = "1"/>
+                </group>
+
+                <group>
+                    <field name='textoDistribuidor' readonly='1' widget='html' force_save='1' /> 
+                </group>
+
+                <group>
+                    <field name='textoSinServicio' readonly='1' widget='html' force_save='1' /> 
+                </group>
+
+                <group attrs='{"invisible": [["esProspecto", "=", True]] } '>
+                    <group class='text-center' string = 'Datos de busqueda'>
+                    </group>
+                </group>
+
+                <group attrs='{"invisible": [["esProspecto", "=", True]] } '>
+                    <group string="Cliente y localidad">
+                        <field name='cliente' readonly='1' force_save = "1"/>
+                        <field name='idCliente' readonly='1' invisible='1' force_save = "1"/>
+                        <field name='estatus' readonly = '1' force_save = '1' />
+                        <field name='localidad' readonly='1' force_save = "1"/>
+                        <field name='zonaLocalidad' readonly='1' force_save = "1"/>
+                        <field name='idLocaliidad' readonly='1' invisible='1' force_save = "1"/>
+                    </group>
+                    <group string="Datos de contacto">
+                        <field name='idContactoInterno' readonly='1' invisible='1' force_save = "1"/>
+                        <field name='nombreContactoLocalidad' readonly='1' force_save = "1"/>
+                        <field name='telefonoContactoLocalidad' readonly='1' force_save = "1"/>
+                        <field name='movilContactoLocalidad' readonly='1' force_save = "1"/>
+                        <field name='correoContactoLocalidad' readonly='1' force_save = "1"/>
+                    </group>
+                </group>
+                <group attrs='{"invisible": [["esProspecto", "=", True]] } '>
+                    <group string = 'Dirreción'>
+                        <field name='direccionCalleNombre' readonly='1' force_save = "1"/>
+                        <field name='direccionNumeroExterior' readonly='1' force_save = "1"/>
+                        <field name='direccionNumeroInterior' readonly='1' force_save = "1"/>
+                        <field name='direccionColonia' readonly='1' force_save = "1"/>
+                    </group>
+                    <group string = " ">
+                        <field name='direccionLocalidad' readonly='1' force_save = "1"/>
+                        <field name='direccionCiudad' readonly='1' force_save = "1"/>
+                        <field name='direccionEstado' readonly='1' force_save = "1"/>
+                        <field name='direccionCodigoPostal' readonly='1' force_save = "1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="abrirTicket" string="Abrir ticket existente" type="object" class="oe_highlight" attrs="{'invisible': ['|',['ticket_id_existente','=', 0],['ticket_id_existente','=', False]]}"/>
+                    <button name="crearTicket" string="Crear" type="object" class="oe_highlight" attrs="{'invisible': [['estatus', '=', 'Moroso']]}"/>
+                    <button special="cancel" string="Cancelar" class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_helpdesk_reincidencia" model="ir.ui.view">
+        <field name="model">helpdesk.reincidencia</field>
+        <field name="arch" type="xml">
+            <form string="Reincidencia">
+                <group>
+                    <group>
+                        <field name='motivo'/>
+                    </group>
+                    <group>
+                    </group>
+                </group>
+                <footer>
+                    <button name="crearTicket" string="Crear" type="object" class="oe_highlight"/>
+                    <button special="cancel" string="Cerrar" class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+
+    <record id="action_activar_toner" model="ir.actions.act_window">
+        <field name="name">Activar tickets de tóner</field>
+        <field name="res_model">helpdesk.activar.cancelado.toner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="groups">studio_customization.validar_toner_d61119fe-f670-4dd0-9dee-6d2bfdd1824e</field>
+        <field name="binding_model_id" ref="helpdesk.model_helpdesk_ticket" />
+    </record>
+    <record id="view_activar_toner_form" model="ir.ui.view">
+        <field name="model">helpdesk.activar.cancelado.toner</field>
+        <field name="arch" type="xml">
+            <form string="Activar tickets seleccionados">
+                <h2>
+                    Se volveran a activar los tickets seleccionados. Pasaran al estado de Pre-ticket
+                </h2>
+                <footer>
+                    <button name="cambioActivo" string="Activar tickets" type="object" class="oe_highlight"/>
+                    <button string="Cerrar" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+    <record id="action_cerrar_mesa" model="ir.actions.act_window">
+        <field name="name">Cerrar  tickets de mesa</field>
+        <field name="res_model">helpdesk.cerrar.tickets.mesa</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="groups">studio_customization.cerrar_tickets_mesa_41c2145f-10a2-429c-b59d-4cc9ec16d613</field>
+        <field name="binding_model_id" ref="helpdesk.model_helpdesk_ticket" />
+    </record>
+    <record id="view_cerrar_mesa_form" model="ir.ui.view">
+        <field name="model">helpdesk.cerrar.tickets.mesa</field>
+        <field name="arch" type="xml">
+            <form string="Cerrar tickets seleccionados">
+                <h2>
+                    Se Cerrarán los tickets seleccionados
+                </h2>
+                <footer>
+                    <button name="confirmarCerrados" string="Cerrar tickets" type="object" class="oe_highlight"/>
+                    <button string="Cerrar" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_cancelar_toner" model="ir.actions.act_window">
+        <field name="name">Cancelar tickets de tóner</field>
+        <field name="res_model">helpdesk.cancelar.tickets.toner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="groups">studio_customization.validar_toner_d61119fe-f670-4dd0-9dee-6d2bfdd1824e</field>
+        <field name="binding_model_id" ref="helpdesk.model_helpdesk_ticket" />
+    </record>
+    <record id="view_cancelar_toner_form" model="ir.ui.view">
+        <field name="model">helpdesk.cancelar.tickets.toner</field>
+        <field name="arch" type="xml">
+            <form string="Cancelar tickets seleccionados">
+                <h2>
+                    Se cancelaran los tickets seleccionados
+                </h2>
+                <footer>
+                    <button name="confirmarCancelado" string="Cancelar tickets" type="object" class="oe_highlight"/>
+                    <button string="Cerrar" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+    <record id="action_validar_toner" model="ir.actions.act_window" >
+        <field name="name">Crear y validar toner</field>
+        <field name="res_model">helpdesk.validar.toner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="groups">studio_customization.validar_toner_d61119fe-f670-4dd0-9dee-6d2bfdd1824e</field>
+        <field name="binding_model_id" ref="helpdesk.model_helpdesk_ticket" />
+    </record>
+    <record id="view_validar_toner_form" model="ir.ui.view">
+        <field name="model">helpdesk.validar.toner</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected ticket toner">
+                <h2>
+                    Se crearan y validaran las solicitudes de toner de los tickets seleccionados
+                </h2>
+
+                <group>
+                    <group>
+                        <!--
+                        <field name='almacenes' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" domain="['&amp;', ('x_studio_cliente', '=', False), '|', ('id', '=', 1), ('id', '=', 18) ]" />
+                        -->
+                        <field name='almacenes' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" domain="['|', '|', ('id', '=', 1), ('id', '=', 18), ('id', '=', 17) ]" />
+                    </group>
+                </group>
+
+                <footer>
+                    <button name="confirmar" string="Crear y validar solicitudes" type="object" class="oe_highlight"/>
+                    <button string="Cerrar" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <record id="view_helpdesk_detalle_toner" model="ir.ui.view">
+        <field name="model">helpdesk.datos.toner</field>
+        <field name="arch" type="xml">
+            <form string="Detalle tóner">
+                <group class='text-center'>
+                    <h2>
+                        <field name="serie" string='' readonly="1"/>
+                    </h2>
+                </group>
+                <group>
+                    <group>
+                        <field name='ticket_id' string='Ticket' readonly='1'/>
+                    </group>
+                    <group>
+
+                    </group>
+                </group>
+                <group>
+                    <notebook>
+                        <page string = 'Pedido'>
+                            <group string='Equipo'>
+                            </group>
+                            <field name='series' domain="['|', ('active', '=', 0), ('active', '=', 1)]" >
+                                <tree>
+                                    <field name='active' invisible='1'/>
+                                    <field name='serie' />
+                                    <field name='tablahtml' widget='html'/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name='serie'/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <group>
+                                            <button name="editar_contadores_wizard" string="Editar contadores" type="object" class="oe_highlight" groups="studio_customization.reinicia contadores en toner" />
+                                        </group>
+                                        <group>
+                                            <!--<button name="reiniciar_contadores_wizard" string="Reiniciar contadores" type="object" class="oe_highlight" />-->
+                                        </group>
+                                    </group>    
+                                </form>
+                            </field>
+                            <group>
+                                <group>
+                                    <field name='solicitud' />
+                                </group>
+                                <group>
+                                    <field name='corte' />
+                                </group>
+                            </group>
+                            <group string='Backorder'>
+                            </group>
+                            <!--
+                            <field name='backorder' readonly='1'>
+                                <tree>
+                                    <field name='x_studio_ticket' string='Ticket' />
+                                    <field name='origin' string='Orden' />
+                                    <field name='partner_id' string='Empresa' />
+                                    <field name='scheduled_date' string='Fecha prevista' />
+                                    <field name='write_uid' string='Última actialización por' />
+                                    <field name='x_studio_toneres' string='Tóner' />
+                                    <field name='estado' string='Estado' />
+                                    <field name='concentrado' string='Concentrado' />
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name='x_studio_ticket' string='Ticket' />
+                                            <field name='origin' string='Orden' />
+                                            <field name='partner_id' string='Empresa' />
+                                            <field name='scheduled_date' string='Fecha prevista' />
+                                        </group>
+                                        <group>
+                                            <field name='write_uid' string='Última actialización por' />
+                                            <field name='estado' string='Estado' />
+                                            <field name='concentrado' string='Concentrado' />
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <field name='x_studio_toneres' string='Tóner' />
+                                    </group>
+                                </form>
+                            </field>
+                            -->
+                            <group string='Diagnosticos'>
+                            </group>
+                            <field name='diagnostico_id' readonly='1'>
+                                <tree>
+                                    <field name='create_date' string='Creado el' />
+                                    <field name='estadoTicket' />
+                                    <field name='comentario' />
+                                    <field name='create_uid' string='Creado por' />
+                                    <field name='evidencia' />
+                                    <field name='mostrarComentario' />
+                                    <field name='creadoPorSistema' />
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name='create_date' string='Creado el' />
+                                            <field name='create_uid' string='Creado por' />
+                                            <field name='estadoTicket' />
+                                            <field name='comentario' />
+                                        </group>
+                                        <group>
+                                            <field name='evidencia' widget="many2many_binary" />
+                                            <field name='mostrarComentario' />
+                                            <field name='creadoPorSistema' />
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <group>
+                                            <button id='btnMostrarComentario' name="mostrarComentarioFun" string="Mostrar comentario en reporte pdf" type="object" class="btn btn-success" />
+                                        </group>
+                                        <group>
+                                            <button name="noMostrarComentario" string="No mostrar comentario en reporte pdf" type="object" class="btn btn-danger" />
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string = 'Cliente'>
+                            <group string='Datos cliente'>
+                                <group>
+                                    <field name='cliente' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                    <field name='tipoCliente' />
+                                    <field name='localidad' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                </group>
+                                <group>
+                                    <field name='zonaLocalidad' />
+                                    <field name='localidadContacto' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                    <field name='estadoLocalidad' />
+                                </group>
+                                <group>
+                                    <field name='telefonoContactoLocalidad' />
+                                    <field name='movilContactoLocalidad' />
+                                    <field name='correoContactoLocalidad' />
+                                </group>
+                                <group>
+                                    <field name='direccionLocalidad' widget='html'/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string = 'Datos del ticket'>
+                            <group>
+                                <group>
+                                    <field name='creadoEl' />
+                                    <field name='areaAtencion' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                    <field name='ejecutivo' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                    <field name='encargadoArea' />
+                                </group>
+                                <group>
+                                    <field name='diasAtraso' />
+                                    <field name='prioridad' widget='priority' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                    <field name='zona' />
+                                    <field name='zonaEstados' />
+                                </group>
+                                <group>
+                                    <field name='numeroTicketCliente' />
+                                    <field name='numeroTicketDistribuidor' />
+                                    <field name='numeroTicketGuia' />
+                                </group>
+                                <group>
+                                    <field name='comentarioLocalidad' />
+                                </group>
+                            </group>
+                        </page>
+                        <page string = 'Vista previa reporte'>
+                            <group>
+                                <group>
+                                    <field name='reportes' force_save='1' invisible='1' options="{'no_create_edit': True, 'no_create': True, 'no_edit': True}" domain="[['model', '=', 'helpdesk.ticket']]" />
+                                </group>
+                            </group>
+                            <group>
+                                <field name='pdfToner' string=' ' force_save='1' widget='pdf_viewer' />
+                            </group>
+                        </page>
+                        <page string = 'Días de atraso'>
+                            <group>
+                                <group>
+                                    <field name='tiempoAtrasoTicket' readonly='1' widget='html'/>
+                                </group>
+                                <group>
+                                    <field name='tiempoAtrasoAlmacen' readonly='1' widget='html'/>
+                                    <field name='tiempoAtrasoDistribucion' readonly='1' widget='html'/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </group>
+                <footer>
+                    <button special="cancel" string="Cerrar" class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+
+
+    <record id="view_helpdesk_bitacora_toner" model="ir.ui.view">
+        <field name="model">helpdesk.detalle.serie.toner</field>
+        <field name="arch" type="xml">
+            <form string="Detalle serie">
+                <group class='text-center'>
+                    <h2>
+                        <field name="serie" string='' readonly="1"/>
+                    </h2>
+                </group>
+                <group>
+                    <group>
+                        <field name="series" readonly="0" force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_edit': True}" />
+                    </group>
+                    <group>
+                        <field name="filtro" />
+                        <field name="dominio" readonly="1" force_save='1' invisible='1'/>
+                    </group>
+                </group>
+                <group>
+                    <notebook>
+                        <page string = 'Tickets'>
+                            <field name='historicoTickets' readonly="1" force_save='1' domain="[['fuente', '=', 'helpdesk.ticket']]">
+                                <tree default_order="create_date desc"><!--x_studio_fecha-->
+                                    <field name='x_studio_tickett' attrs='{"domain": [["fuente","=","Equipo"]]}'/>
+                                    <field name='create_date' />
+                                    <field name='fuente' invisible='1'/>
+                                    <field name='x_studio_fecha_techra' />
+                                    <field name='serie' />
+                                    <field name='hTicketCliente' />
+                                    <field name='hTicketAreaDeAtencion' />
+                                    <field name='hTicketUbicacion' />
+                                    <field name='hTicketFalla' />
+                                    <field name='hTicketUltimaEtapaTicket' />
+                                    <field name='contadorMono' />
+                                    <field name='contadorColor' />
+                                    <field name='hTicketHojaDeEstado' />
+                                    <field name='hTicketUltimaNota' />
+                                    <field name='hTicketFechaNota' />
+
+                                    <!--
+                                    <field name='x_studio_fecha' />
+                                    <field name='hTicketSerie' />
+                                    -->
+                                    
+                                    
+                                    
+                                    
+                                    <!--
+                                    <field name='x_studio_fecha' />
+                                    <field name='x_studio_field_no6Rb' />
+                                    <field name='x_studio_texto_anio' />
+                                    
+                                    <field name='' />
+                                    -->
+                                </tree>
+                                <form>
+                                </form>
+                            </field>
+                        </page>
+                        <page string = 'Lecturas'>
+                            <field name='lecturas' readonly="1" force_save='1' domain="[['fuente', '=', 'dcas.dcas']]" />
+                        </page>
+                        <page string = 'Tóner'>
+                            <field name='toner' readonly="1" force_save='1' />
+                        </page>
+                        <page string = 'Historico de componentes'>
+                            <field name='historicoDeComponentes' readonly="1" force_save='1'/>
+                        </page>
+                        <page string = 'Movimientos'>
+                            <field name='movimientos' readonly="1" force_save='1'/>
+                        </page>
+                    </notebook>
+                </group>
+                <footer>
+                    <button special="cancel" string="Cerrar" class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+
+
+
+    <!--
+    <record id="view_helpdesk_crear_solicitud_toner" model="ir.ui.view">
+        <field name="model">helpdesk.tonerticket</field>
+        <field name="arch" type="xml">
+            <form string="Crear">
+                <group>
+                    <group string='Buscar'>
+
+                        <field name='dca' readonly='0'>
+                            <form>
+                                <group name="1">
+                                    <group name="a">
+                                        <field name="x_studio_link" string="link" wiget="html" invisible='1'/>
+                                        <field name="grupo" invisible='1'/>
+                                        <field name="serie" force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                        <field name='colorEquipo' force_save='1' readonly='1'/>
+                                        <field name='ultimaUbicacion' readonly='1' force_save='1'/>
+                                        <field name='equipo' readonly='1' force_save='1'/>
+                                        <field name="contadorMono" string = 'Contador Monocromático' force_save='1'/>
+                                        <field name="contadorAnteriorNegro" string = 'Contador de ultima solicitud negro' readonly = '1' force_save='1' />
+                                        <field name="contadorColor" string = 'Contador color' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" force_save='1' />
+                                        <field name='contadorAnteriorColor' string='Contador ultima solicitud color' readonly='1' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" force_save='1' />
+                                        
+                                        <field name='x_studio_cartuchonefro' string="Cartucho negro" domain="[&quot;&amp;&quot;,[&quot;categ_id&quot;,&quot;=&quot;,5],[&quot;x_studio_color&quot;,&quot;=&quot;,&quot;Negro&quot;],[&quot;x_studio_toner_compatible.id&quot;,&quot;=&quot;,x_studio_field_qYMJD]]" force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                        <field name="x_studio_rendimiento_negro" string="Rendimiento Negro" readonly='1' force_save='1' />
+                                        <field name="porcentajeNegro" string ='Porcentaje negro' force_save='1' />
+                                        
+                                        <field name='x_studio_cartucho_amarillo' domain='[ &quot;&amp;&quot;, ["categ_id", "=", 5], ["x_studio_color","=", "Amarillo"], ["x_studio_toner_compatible.id", "=", x_studio_field_qYMJD] ]' string = 'Cartucho amarillo' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                        <field name='x_studio_rendimientoa' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" readonly='1' string='Rendimiento Amarillo' force_save='1' />
+                                        <field name='porcentajeAmarillo' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" string='Porcentaje Amarillo' force_save='1' />
+                                        
+                                        <field name='x_studio_cartucho_cian_1' domain="[&quot;&amp;&quot;,[&quot;categ_id&quot;,&quot;=&quot;,5],[&quot;x_studio_color&quot;,&quot;=&quot;,&quot;Cian&quot;],[&quot;x_studio_toner_compatible.id&quot;,&quot;=&quot;,x_studio_field_qYMJD]]" string ='Cartucho cian' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                        <field name='x_studio_rendimientoc' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" readonly='1' string = 'Rendimiento cian' force_save='1' />
+                                        <field name='porcentajeCian' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" string ='Porcentaje cian' force_save='1' />
+                                        
+                                        <field name='x_studio_cartucho_magenta' domain='[ &quot;&amp;&quot;, ["categ_id", "=", 5], ["x_studio_color","=", "Magenta"], ["x_studio_toner_compatible.id", "=", x_studio_field_qYMJD] ]' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }"  string = 'Cartucho magenta' force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                        <field name='x_studio_rendimientom' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" readonly='1' string = 'Rendimiento magenta' force_save='1' />
+                                        <field name='porcentajeMagenta' attrs="{'invisible': [['colorEquipo', '=', 'B/N']] }" string ='Porcentaje magenta' force_save='1' />
+
+
+
+
+
+
+
+
+                                        <field name="x_studio_field_qYMJD" attrs="{}" invisible="1" force_save='1' />
+                                        
+                                        
+                                        <field name="x_studio_usuariocaptura" string="UsuarioCaptura" attrs="{}" invisible="1" force_save='1' />
+                                        <field name="x_studio_fecha" string="Fecha  " invisible='1' force_save='1' />
+                                        <field name="x_studio_descripcion" string="Descripción" invisible='1' force_save='1' />
+                                        <field name="x_studio_cartucho_negro" string="cartucho negro" invisible='1' force_save='1' />
+                                        <field name="ubicacion" string="Ubicación" invisible='1' force_save='1' />
+                                        <field name="cartuchoNegro" invisible='1' force_save='1' />
+                                        <field name="respaldo" invisible='1' force_save='1' />
+                                        <field name="usb" string="USB" invisible='1' force_save='1' />
+                                        <field name="x_studio_toner" string="Tóner" invisible='1' force_save='1' />
+                                        <field name="ip" invisible='1' force_save='1' />
+                                        <field name="x_studio_tickett" string="Ticket Techra" invisible='1' force_save='1' />
+                                        <field name="fuente" invisible='1' force_save='1' />
+                                        <field name="x_studio_field_no6Rb" string="Fecha mes/año" invisible='1' force_save='1' />
+                                        <field name="x_studio_fecha_texto_anio" string="Fecha texto año" invisible='1' force_save='1' />
+                                        <field name="x_studio_fecha_techra" string="Fecha techra" invisible='1' force_save='1' />
+                                        <field name="x_studio_fuente_real" invisible='1' force_save='1' />
+                                        <field name="x_studio_mes" string="Mes" invisible='1' force_save='1' />
+                                    </group>
+                                    <group name="b">
+                                        
+                                        <field name="tablahtml" widget='html' force_save='1' readonly='1'/>
+
+
+
+                                        
+                                        <field name="x_studio_rendimiento" string="Rendimiento"  invisible='1'/>
+                                        <field name="x_studio_rendimiento_color" string="Rendimiento Color" invisible='1'/>
+                                        <field name="x_studio_toner_negro" string="Tóner Negro" invisible='1'/>
+                                        <field name="x_studio_toner_cian" string="Tóner Cian" invisible='1'/>
+                                        <field name="x_studio_toner_magenta" string="Tóner Magenta" invisible='1'/>
+                                        <field name="x_studio_toner_amarillo" string="Tóner Amarillo" invisible='1'/>
+                                        <field name="x_studio_robot" string="robot" attrs="{}" invisible='1'/>
+                                        <field name="x_studio_field_VYRwu" string="Resultado" invisible='1'/>
+                                        <field name="x_studio_hoja_de_estado_filename" invisible='1'/>
+                                        <field filename="x_studio_hoja_de_estado_filename" name="x_studio_hoja_de_estado" string="Hoja de estado" invisible='1'/>
+                                    </group>
+                                </group>
+                            </form>
+                            <tree string="DCAS">
+                                <field name="serie"/>
+                                <field name="tablahtml" widget='html'/>
+                            </tree>
+                        </field>
+                    </group>
+                </group>
+
+                <group>
+                    <field name='textoTicketExistente' string='' widget='html' attrs="{'readonly': 1}"/>
+                    <field name='textoClienteMoroso' string='' widget='html' attrs="{'readonly': 1}"/>
+                </group>
+
+                <notebook>
+                    <page string = 'Pedido'>
+                        <group>
+                            <group>
+                                <field name='tipoReporte' force_save='1' readonly='0' />
+                                <field name='corte' force_save='1' readonly='0' />
+
+                                <field name='almacenes' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" domain="['|', '|', ('id', '=', 1), ('id', '=', 18), ('id', '=', 17) ]" readonly='0' />
+
+                            </group>
+                            <group>
+                                <field name='validarHastaAlmacenTicket' force_save='1' readonly='0' />
+                                <field name='validarTicket' force_save='1' readonly='0' />
+                                <field name='ponerTicketEnEspera' force_save='1' readonly='0' />
+                            </group>
+                        </group>
+                    </page>
+                    <page string = 'Cliente'>
+                        <group>
+                            <group>
+                                <field name='idClienteAyuda' invisible='1' force_save='1' />
+                                <field name='idLocalidadAyuda' invisible='1' force_save='1' />
+                                <field name='estatus' force_save='1' readonly='1' />
+                                <field name='editarCliente' force_save='1' readonly='0' />
+                                <field name='cliente' force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" attrs="{'readonly': [['editarCliente', '=', False]]}" />
+                                <field name='tipoCliente' force_save='1' readonly='1' />
+                                <field name='localidad' force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" attrs="{'readonly': [['editarCliente', '=', False]]}" domain='["&amp;",["parent_id.id", "=", idClienteAyuda],["type","=","delivery"]]' />    
+                            </group>
+                            <group>
+                                <field name='zonaLocalidad' force_save='1' attrs="{'readonly': [['editarCliente', '=', False]]}" />
+                                <field name='localidadContacto' force_save='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" attrs="{'readonly': [['editarCliente', '=', False]]}" domain='["&amp;", "|",["parent_id.id","=",idLocalidadAyuda], ["parent_id.id","=",idClienteAyuda],["type","=","contact"]]' />
+
+
+
+                                <field name='estadoLocalidad' force_save='1' readonly='1'/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                
+                                <field name='mostrarAnadirContacto' force_save='1' readonly='0' invisible='0' />
+                            </group>
+                        </group>
+
+                        <group string='Agregar nuevo contacto a localidad' attrs="{'invisible': [('mostrarAnadirContacto', '=', False)]}">
+                            <group>
+                                <field name="tipoDeDireccion" invisible='1' force_save = "1" readonly='0'/>
+                                <field name="subtipo" invisible='1' force_save = "1" readonly='0'/>
+                                <field name="nombreDelContacto" required='1' readonly='0'/>
+                                <field name="titulo" placeholder="Por ejemplo, Sr." options="{'no_create_edit': True, 'no_create': True}" invisible='1' readonly='0'/>
+                                <field name="puestoDeTrabajo" placeholder="Por ejemplo, Director de ventas" invisible='1' readonly='0'/>
+                                <field name="correoElectronico" readonly='0'/>
+                                <field name="telefono" readonly='0'/>
+                                <field name="movil" readonly='0'/>
+                                <field name="notas" placeholder="Notas internas..." readonly='0'/>
+                                <button name="anadirContactoALocalidad" string="Añadir contcto a localidad" icon="fa-user-plus" type="object"  attrs='{"invisible": [["localidad","=", False]]}' groups="" readonly='0'/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <group>
+                                <field name='telefonoContactoLocalidad' force_save='1' readonly='1'/>
+                                <field name='movilContactoLocalidad' force_save='1' readonly='1'/>
+                                <field name='correoContactoLocalidad' force_save='1' readonly='1'/>
+                            </group>
+                            <group>
+                                <field name='direccionLocalidad' force_save='1' readonly='1' widget='html'/>
+                            </group>
+                        </group>
+                    </page>
+                    <page string = 'Datos del ticket'>
+                        <group>
+                            <group>
+                                <field name='comentarioLocalidad' force_save='1' readonly='0'/>
+                            </group>
+                            <group>
+                                <field name='prioridad' force_save='1' widget='priority' readonly='0'/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name='numeroTicketCliente' force_save='1' readonly='0' />
+                            </group>
+                            <group>
+                                <field name='numeroTicketDistribuidor' force_save='1' readonly='0' />
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+                
+                <group>
+                    <group>
+                        <field name='noCrearTicket' invisible='1' force_save='1' />
+                    </group>
+                </group>
+
+                <footer>
+                    <button name="crearTicketToner" string="Crear" type="object" class="oe_highlight" attrs="{'invisible': ['|', '|', '|', ('estatus', '=', 'Moroso'), ('cliente', '=', False), ('dca', '=', False), ('noCrearTicket', '=', True) ]}" />
+                    <button special="cancel" string="Cancelar" class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    -->
+
+
+
+
+
+
+
+    <record id="view_helpdesk_agregar_productos" model="ir.ui.view">
+        <field name="model">helpdesk.agregar.productos</field>
+        <field name="arch" type="xml">
+            <form string="Agregar productos a ticket">
+                
+                <group>
+                    <group>
+                        <field name='ticket_id' readonly='1' options="{'no_create_edit': True, 'no_create': True}" />
+                        <field name='activar_compatibilidad' invisible='1' />
+                    </group>
+                    <group>
+                        <field name='estadoSolicitud' readonly='1' force_save='1' />
+                    </group>
+                </group>
+                
+                <group string='Seleccionar refacciones y/o accesorios'>
+                    <field name='accesorios' string='' context="{'default_wizRela': id}" >
+                        <tree editable='bottom'>
+                            <!--<field name='ticketRelacion' readonly='1' />-->
+                            <field name='productos'  options="{'no_create_edit': True, 'no_create': True}" />
+                            <!--<field name='detalleDeProducto' widget='html' readonly='1' />-->
+                            <!--<field name='referenciaInterna' readonly='1' />-->
+                            <!--<field name='nombreProducto' readonly='1' />-->
+                            <!--<field name='descripcion' readonly='1' />-->
+                            <!--<field name='cantidadAMano' readonly='1' />-->
+                            <field name='cantidadPedida' />
+                            <field name='wizRela' readonly='1' invisible = '1'/>
+                        </tree>
+                    </field>
+                    <group>
+                      <!--  
+                        <field name="productos" string="Refacciones y accesorios " invisible='1' domain="['|', '|', '|', ('categ_id', '=', 7), ('categ_id', '=', 9), ('categ_id', '=', 10), ('categ_id', '=', 11) ]" options="{'no_create_edit': True, 'no_create': True}" readonly='0' on_change="0" >
+                            <tree string="Productos" editable="bottom" >
+                                <field name='categ_id' string='Categoría del producto' readonly='1'/>
+                                <field name='product_variant_id' string='Producto' on_change="0" />
+                                <field name='default_code' string='Referencia interna' readonly='1'/>
+                                <field name='name' string='Nombre' readonly='1'/>
+                                <field name='description' string='Descripción' readonly='1'/>
+                                <field name='qty_available' string='Cantidad a mano' />
+                                <field name='virtual_available' string='Cantidad prevista' />
+                                <field name='x_studio_cantidad_pedida' string='Cantidad a pedir' />
+                            </tree>
+                        </field>
+                    -->
+                    </group>
+                </group>
+                
+                <!--
+                <group>
+                    <group>
+                        <field />
+                    </group>
+                </group>
+                -->
+
+                <footer>
+                    <button name="agregarProductos" string="Agregar productos" type="object" class="oe_highlight" />
+                    <button string="Cerrar ventana" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+    <record id="view_helpdesk_crear_y_validar_refacciones" model="ir.ui.view">
+        <field name="model">helpdesk.confirmar.validar.refacciones</field>
+        <field name="arch" type="xml">
+            <form string="Crear y validar solicitud de refacciones">
+                
+                <group>
+                    <group>
+                        <field name='ticket_id' readonly='1' options="{'no_create_edit': True, 'no_create': True}" />
+                    </group>
+                    <group>
+                        <field name='estadoSolicitud' readonly='1' />
+                        <field name='solicitud' readonly='1' options="{'no_create_edit': True, 'no_create': True}" />
+                    </group>
+                </group>
+                <group>
+                    <field name='serie' readonly='1' widget='html' />
+                </group>
+
+                <group>
+                    <field name='mensajesAlerta' string='' readonly='1' widget='html' />
+                </group>
+                
+                <group>
+                    <notebook>
+                        <page string = 'Bitácora'>
+                            <notebook>
+                                <!--
+                                <page string = 'Tickets'>
+                                    <field name='historicoTickets'>
+                                        <tree default_order="create_date desc">
+                                            <field name='x_studio_tickett' attrs='{"domain": [["fuente","=","Equipo"]]}'/>
+                                            <field name='create_date' />
+                                            <field name='fuente' />
+                                            <field name='x_studio_fecha_techra' />
+                                            <field name='serie' />
+                                            <field name='hTicketCliente' />
+                                            <field name='hTicketAreaDeAtencion' />
+                                            <field name='hTicketUbicacion' />
+                                            <field name='hTicketFalla' />
+                                            <field name='hTicketUltimaEtapaTicket' />
+                                            <field name='contadorMono' />
+                                            <field name='contadorColor' />
+                                            <field name='hTicketHojaDeEstado' />
+                                            <field name='hTicketUltimaNota' />
+                                            <field name='hTicketFechaNota' />
+                                        </tree>
+                                        <form>
+                                        </form>
+                                    </field>
+                                </page>
+                                <page string = 'Lecturas'>
+                                    <field name='lecturas' />
+                                </page>
+                                <page string = 'Tóner'>
+                                    <field name='toner' />
+                                </page>
+                                -->
+                                <page string = 'Historico de componentes'>
+                                    <field name='historicoDeComponentes' options="{'no_create': True}" readonly="1">
+                                        <tree>
+                                            <field name="create_date" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                                            <field name="write_uid" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea" attrs="{}"/>
+                                            <field name="write_date" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                                            <field name="create_uid"/>
+                                            <field name="x_studio_creado_por_script" string="Creado por script" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                                            <field name="x_ultimaCargaRefacciones"/>
+                                            <field name="x_studio_field_MH4DO"/>
+                                            <field name="x_tipo"/>
+                                            <field name="x_studio_modelo"/>
+                                            <field name="x_studio_cantidad"/>
+                                            <field name="x_studio_fecha_de_entrega"/>
+                                            <field name="x_studio_ticket"/>
+                                            <field name="x_studio_contador_bn"/>
+                                            <field name="x_studio_contador_color" string="Contador Color"/>
+                                        </tree>
+                                        <form>
+                                            <group>
+                                                <field name="create_date" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                                                <field name="write_uid" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea" attrs="{}"/>
+                                                <field name="write_date" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                                                <field name="create_uid"/>
+                                                <field name="x_studio_creado_por_script" string="Creado por script" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                                                <field name="x_ultimaCargaRefacciones"/>
+                                                <field name="x_studio_field_MH4DO"/>
+                                            </group>
+                                            <group>
+                                                <field name="x_tipo"/>
+                                                <field name="x_studio_modelo"/>
+                                                <field name="x_studio_cantidad"/>
+                                                <field name="x_studio_fecha_de_entrega"/>
+                                                <field name="x_studio_ticket"/>
+                                                <field name="x_studio_contador_bn"/>
+                                                <field name="x_studio_contador_color" string="Contador Color"/>
+                                            </group>
+                                        </form>
+                                    </field>
+                                </page>
+                                <!--
+                                <page string = 'Movimientos'>
+                                    <field name='movimientos' />
+                                </page>
+                                -->
+                            </notebook>
+                        </page>
+                        <page string = 'Contadores'>
+                            <group>
+                                <group>
+                                    <field name='contadoresAnterioresText' widget='html' readonly='1' />
+                                </group>
+                            </group>
+                        </page>
+                        <page string = 'Productos'>
+                            
+                                <field name='accesorios' string='' context="{'default_wizRela': id}" >
+                                    <tree editable='bottom'>
+                                        <!--<field name='ticketRelacion' readonly='1' />-->
+                                        <field name='productos'  options="{'no_create_edit': True, 'no_create': True}" />
+                                        <!--<field name='detalleDeProducto' widget='html' readonly='1' />-->
+                                        <!--<field name='referenciaInterna' readonly='1' />-->
+                                        <!--<field name='nombreProducto' readonly='1' />-->
+                                        <!--<field name='descripcion' readonly='1' />-->
+                                        <!--<field name='cantidadAMano' readonly='1' /> -->
+                                        <field name='cantidadPedida' />
+                                        <field name='wizRela' readonly='1' invisible = '1'/>
+                                    </tree>
+                                </field>
+                                    <!--
+                                    <field name="productos" string="Refacciones y accesorios " options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" readonly='0' >
+                                        <tree string="Productos" editable="bottom" >
+                                            <field name='categ_id' string='Categoría del producto' readonly='1'/>
+                                            <field name='product_variant_id' string='Producto' />
+                                            <field name='default_code' string='Referencia interna' readonly='1'/>
+                                            <field name='name' string='Nombre' readonly='1'/>
+                                            <field name='description' string='Descripción' readonly='1'/>
+                                            <field name='qty_available' string='Cantidad a mano' />
+                                            <field name='virtual_available' string='Cantidad prevista' />
+                                            <field name='x_studio_cantidad_pedida' string='Cantidad a pedir' />
+                                        </tree>
+                                    </field>
+                                    -->
+                                
+                            
+                            <!--
+                            <field name='productosDos' string=''>
+                                <tree string="Productos" editable="bottom" >
+                                    <field name='productos' domain="['|', '|', '|', ('categ_id', '=', 7), ('categ_id', '=', 9), ('categ_id', '=', 10), ('categ_id', '=', 11) ]" options="{'no_create_edit': True, 'no_create': True}" >
+                                        <tree string="Refacciones y accesorios" >
+                                            <field name='categ_id' string='Categoría del producto' readonly='1'/>
+                                            <field name='product_variant_id' string='Producto' />
+                                            <field name='default_code' string='Referencia interna' readonly='1'/>
+                                            <field name='name' string='Nombre' readonly='1'/>
+                                            <field name='description' string='Descripción' readonly='1'/>
+                                            <field name='qty_available' string='Cantidad a mano' />
+                                            <field name='virtual_available' string='Cantidad prevista' />
+                                            <field name='x_studio_cantidad_pedida' string='Cantidad a pedir' />
+                                        </tree>
+                                    </field>
+                                    <field name='cantidadPedida' />
+                                    <field name='detalleDeProducto' readonly='1' widget='html' />
+                                </tree>
+                            </field>
+                            -->
+                        </page>
+                        <page string = 'Diagnostico antes de validar'>
+                            <group>
+                                <group>
+                                    <field name="estado" readonly="1"/>
+                                    <field name="comentario" attrs='{"readonly": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                                </group>
+                                <group>
+                                    <field name="check" attrs='{"readonly": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                                    <field name="evidencia" widget="many2many_binary" attrs='{"readonly": ["|", ["estado","=","Cerrado"], ["estado","=","Cancelado"] ]}'/>
+                                </group>
+                            </group>
+
+                            <field name="diagnostico_id" options="{'no_create': True}" readonly="1">
+                                <tree>
+                                    <field name="create_date" string='Creado el' readonly="1"/>
+                                    <field name="estadoTicket" readonly="1"/>
+                                    <field name="comentario" string='Diagnostico / Comentario'/>
+                                    <field name="create_uid" readonly="1" string='Encargado'/>
+                                    <field name="evidencia" widget="many2many_binary"/>
+                                    <field name="mostrarComentario" />
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="ticketRelacion" can_create="true" can_write="true" modifiers="{}" invisible="1"/>
+                                            <field name="estadoTicket" modifiers="{}" readonly="1"/>
+                                            <field name="comentario" modifiers="{}"/>
+                                        </group>
+                                        <group>
+                                            <field name="evidencia" can_create="true" can_write="true" modifiers="{}" widget="many2many_binary"/>
+                                            <field name="mostrarComentario" modifiers="{}"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+
+                    </notebook>
+
+                </group>
+
+                <footer>
+                    <button name="confirmarYValidarRefacciones" string="Confirmar solicitud" type="object" class="oe_highlight" />
+                    <button name="validar" string="Confirmar solicitud 2" invisible='1' type="object" class="btn btn-warning" />
+                    <button name="validacionSolicitud" invisible='1' string="Validar solicitud con SO existente" help='Valida la solicitud que se genero previamente y no se logro validar' type="object" class="oe_highlight" />
+                    <button string="Cerrar ventana" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+    <record id="view_helpdesk_ticket_reporte" model="ir.ui.view">
+        <field name="model">helpdesk.ticket.reporte</field>
+        <field name="arch" type="xml">
+            <form string="Reporte (Backlog)">
+                <group>
+                    <group string='Periodo de tiempo'>
+                        <field name="fechaInicial" required="1"/>
+                        <field name="fechaFinal" required="1"/>
+                    </group>
+                    <group string='Selección'>
+                        <field name='tipoDeReporte' />
+                        <field name='mostrarCerrados' />
+                        <field name='mostrarCancelados' />
+                        <field name='clienteRelacion' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" domain='[["x_studio_activo_1", "=", True]]' widget="many2many_tags" />
+                    </group>
+                </group>
+                <group string='Área de atención'>
+                    <group>
+                        <button name='areasMesa' string="Todas las áreas de mesa" type="object" class="btn btn-info btn-sm"/>
+                        <button name='areasToner' string="Todas las áreas de tóner" type="object" class="btn btn-info btn-sm"/>
+                    </group>
+                    <group>
+                        <button name='quitarAreas' string="Quitar todas las áreas" type="object" class="btn btn-info btn-sm"/>
+                    </group>
+                    <field name='area' widget='many2many_tags' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" required="0" />
+                </group>
+                <group >
+                    <group string='Selecciona los tipos de reporte'>
+                        <button name='ponerTodos' string="Seleccionar todos los tipos" type="object" class="btn btn-success btn-sm"/>
+                        <button name='quitarTodos' string="Quitar todos los tipos" type="object" class="btn btn-danger btn-sm"/>
+                        
+                        <field name='tipoReporteFalla' id='tipoReporteFalla' />
+                        <field name='tipoReporteIncidencia' />
+                        <field name='tipoReporteReeincidencia' />
+                        <field name='tipoReportePregunta' />
+                        <field name='tipoReporteRequerimiento' />
+                        <field name='tipoReporteSolicitudDeRefaccion' />
+                        <field name='tipoReporteConectividad' />
+                        <field name='tipoReporteReincidencias' />
+                        <field name='tipoReporteInstalacion' />
+                        <field name='tipoReporteMantenimientoPreventivo' />
+                        <field name='tipoReporteIMAC' />
+                        <field name='tipoReporteProyecto' />
+                        <field name='tipoReporteCambio' />
+                        <field name='tipoReporteServicioDeSoftware' />
+                        <field name='tipoReporteResurtidoDeAlmacen' />
+                        <field name='tipoReporteSupervision' />
+                        <field name='tipoReporteDemostracion' />
+                        <field name='tipoReporteTomaDeLectura' />
+                    </group>
+                    
+                </group>
+                <footer>
+                    <button name="report" string="Reporte" type="object" class="oe_highlight"/>
+                    <button string="Cerrar ventana" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+    <record id="view_helpdesk_reiniciar_contadores" model="ir.ui.view">
+        <field name="model">helpdesk.contadores.reiniciar.mesa</field>
+        <field name="arch" type="xml">
+            <form string="Reiniciar contadores">
+
+                <group string='Datos del equipo'>
+                    <group>
+                        <field name='ticket_id' readonly='1' />
+                        <field name='serieSeleccionada' readonly='1' />
+                        <field name='tipoEquipo' readonly='1' />
+                    </group>
+                </group>
+
+                <group string='Motivo por el que se reiniciara el contador'>
+                    <group>
+                        <field name='estado' force_save='1' readonly='1' />
+                        <field name='comentario' force_save='1' />
+                    </group>
+                    <group>
+                        <field name='check' force_save='1' />
+                        <field name='evidencia' widget="many2many_binary" force_save='1' />
+                    </group>
+                </group>
+
+                <group string='Contadores actuales y actualizados'>
+                    <group>
+                        <field name='contadorMonoActual' readonly='1' force_save='1' />
+                        <field name='contadorColorActual' readonly='1' force_save='1' attrs="{'invisible': [('tipoEquipo', '=', 'B/N')]}" />
+                    </group>
+                    <group>
+                        <field name='contadorMonoActualizado' force_save='1' readonly='1' />
+                        <field name='contadorColorActualizado' attrs="{'invisible': [('tipoEquipo', '=', 'B/N')]}" force_save='1' readonly='1' />
+                    </group>
+                </group>
+                <group> 
+                    <field name='textoInformativo' force_save='1' readonly='1' widget='html' />
+                </group>
+                <footer>
+                    <button name="reiniciarContadores" string="Reiniciar contador" type="object" class="oe_highlight" />
+                    <button special="cancel" string="Cerrar" class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+    <record id="view_helpdesk_editar_contadores" model="ir.ui.view">
+        <field name="model">helpdesk.contadores.editar.mesa</field>
+        <field name="arch" type="xml">
+            <form string="Editar contadores">
+
+                <group string='Datos del equipo'>
+                    <group>
+                        <field name='ticket_id' readonly='1' />
+                        <field name='serieSeleccionada' readonly='1' />
+                        <field name='tipoEquipo' readonly='1' />
+                    </group>
+                </group>
+
+                <group string='Motivo por el que se reiniciara el contador'>
+                    <group>
+                        <field name='estado' force_save='1' readonly='1' />
+                        <field name='comentario' force_save='1' />
+                    </group>
+                    <group>
+                        <field name='check' force_save='1' />
+                        <field name='evidencia' widget="many2many_binary" force_save='1' />
+                    </group>
+                </group>
+
+                <group string='Contadores actuales y actualizados'>
+                    <group>
+                        <field name='contadorMonoActual' readonly='1' force_save='1' />
+                        <field name='contadorColorActual' readonly='1' force_save='1' attrs="{'invisible': [('tipoEquipo', '=', 'B/N')]}" />
+                    </group>
+                    <group>
+                        <field name='contadorMonoActualizado' force_save='1' readonly='0' />
+                        <field name='contadorColorActualizado' attrs="{'invisible': [('tipoEquipo', '=', 'B/N')]}" force_save='1' readonly='0' />
+                    </group>
+                </group>
+                <group> 
+                    <field name='textoInformativo' force_save='1' readonly='1' widget='html' />
+                </group>
+                <footer>
+                    <button name="editarContadores" string="Editar contador" type="object" class="oe_highlight" />
+                    <button special="cancel" string="Cerrar" class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+    <record id="view_helpdesk_detalle_mesa" model="ir.ui.view">
+        <field name="model">helpdesk.datos.mesa</field>
+        <field name="arch" type="xml">
+            <form string="Detalle Mesa">
+                <group class='text-center'>
+                    <h2>
+                        <field name="serie" string='' readonly="1"/>
+                    </h2>
+                </group>
+                <group>
+                    <group>
+                        <field name='ticket_id' string='Ticket' readonly='1'/>
+                        <field name='tipoDeReporte' readonly='1' />
+                    </group>
+                    <group>
+                        <field name='etapa' readonly='1' />
+                    </group>
+                </group>
+                <group>
+                    <notebook>
+                        <page string = 'Pedido'>
+                            <group string='Equipo'>
+                            </group>
+                            <field name='seriesText' readonly='1' widget='html' >
+                                <!--
+                                <tree>
+                                    <field name='name' string='Número de serie' />
+                                    <field name='product_id' string='Producto' />
+                                    <field name='x_studio_ultima_ubicacin' string='Ultima unicación' />
+                                    <field name='x_studio_color_bn' string='Color o B/N' />
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name='name'/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <group>
+                                            <field name='product_id' string='Producto' />
+                                            <field name='x_studio_ultima_ubicacin' string='Ultima unicación' />
+                                        </group>
+                                        <group>
+                                            <field name='x_studio_color_bn' string='Color o B/N' />
+                                        </group>
+                                    </group>
+                                </form>
+                            -->
+                            </field>
+                            <group string='Refacciones y accesorios'>
+                            </group>
+                            <field name='refaccionesText' readonly='1' widget='html' >
+                                <!--
+                                <tree>
+                                    <field name='product_variant_id' string='Producto' />
+                                    <field name='categ_id' string='Categoría del producto' />
+                                    <field name='default_code' string='Referencia interna' />
+                                    <field name='name' string='Nombre' />
+                                    <field name='qty_available' string='Cantidad a mano' />
+                                    <field name='virtual_available' string='Cantidad prevista' />
+                                    <field name='x_studio_cantidad_pedida' string='Cantidad a pedir' />
+                                </tree>
+                            -->
+                            </field>
+                            <group>
+                                <group>
+                                    <field name='solicitud' />
+                                </group>
+                                <group>
+                                    <!--
+                                    <field name='corte' />
+                                    -->
+
+                                </group>
+                            </group>
+                            <group string='Diagnosticos'>
+                            </group>
+                            <field name='diagnostico_id' readonly='1'>
+                                <tree>
+                                    <field name='create_date' string='Creado el' />
+                                    <field name='estadoTicket' />
+                                    <field name='comentario' />
+                                    <field name='create_uid' string='Creado por' />
+                                    <field name='evidencia' />
+                                    <field name='mostrarComentario' />
+                                    <field name='creadoPorSistema' />
+                                </tree>
+                                <form>
+                                    
+                                    <group>
+                                        <group>
+                                            <field name='create_date' string='Creado el' />
+                                            <field name='create_uid' string='Creado por' />
+                                            <field name='estadoTicket' />
+                                            <field name='comentario' />
+                                        </group>
+                                        <group>
+                                            <field name='evidencia' widget="many2many_binary" />
+                                            <field name='mostrarComentario' />
+                                            <field name='creadoPorSistema' />
+                                        </group>
+                                    </group>
+                                    
+                                    <group>
+                                        <group>
+                                            <button id='btnMostrarComentario' name="mostrarComentarioFun" string="Mostrar comentario en reporte pdf" type="object" class="btn btn-success" />
+                                        </group>
+                                        <group>
+                                            <button name="noMostrarComentario" string="No mostrar comentario en reporte pdf" type="object" class="btn btn-danger" />
+                                        </group>
+                                    </group>
+                                    
+                                </form>
+                            </field>
+                            
+                        </page>
+                        <page string = 'Cliente'>
+                            <group string='Datos cliente'>
+                                <group>
+                                    <field name='cliente' readonly='1' />
+                                    <field name='tipoCliente' readonly='1' />
+                                    <field name='localidad' readonly='1' />
+                                </group>
+                                <group>
+                                    <field name='zonaLocalidad' readonly='1' />
+                                    <field name='localidadContacto' readonly='1' />
+                                    <field name='estadoLocalidad' readonly='1' />
+                                </group>
+                                <group>
+                                    <field name='telefonoContactoLocalidad' readonly='1' />
+                                    <field name='movilContactoLocalidad' readonly='1' />
+                                    <field name='correoContactoLocalidad' readonly='1' />
+                                </group>
+                                <group>
+                                    <field name='direccionLocalidad' readonly='1' widget='html'/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string = 'Datos del ticket'>
+                            <group>
+                                <group>
+                                    <field name='creadoEl' readonly='1' />
+                                    <field name='areaAtencion' readonly='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                    <field name='ejecutivo' readonly='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                    <field name='encargadoArea' readonly='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                                </group>
+                                <group>
+                                    <field name='diasAtraso' readonly='1' />
+                                    <field name='prioridad' readonly='1' widget='priority' />
+                                    <field name='zona' readonly='1' />
+                                    <field name='zonaEstados' readonly='1' />
+                                </group>
+                                <group>
+                                    <field name='numeroTicketCliente' readonly='1' />
+                                    <field name='numeroTicketDistribuidor' readonly='1' />
+                                    <field name='numeroTicketGuia' readonly='1' />
+                                </group>
+                                <group>
+                                    <field name='comentarioLocalidad' readonly='1' />
+                                </group>
+                            </group>
+                        </page>
+                        <page string = 'Vista previa reporte'>
+                            <group>
+                                <group>
+                                    <field name='reportes' force_save='1' invisible='1' options="{'no_create_edit': True, 'no_create': True, 'no_edit': True}" domain="[['model', '=', 'helpdesk.ticket']]" />
+                                </group>
+                            </group>
+                            <group>
+                                <field name='pdfToner' string=' ' force_save='1' widget='pdf_viewer' />
+                            </group>
+                        </page>
+                        <page string = 'Días de atraso'>
+                            <group>
+                                <group>
+                                    <field name='tiempoAtrasoTicket' readonly='1' widget='html'/>
+                                </group>
+                                <group>
+                                    <field name='tiempoAtrasoAlmacen' readonly='1' widget='html'/>
+                                    <field name='tiempoAtrasoDistribucion' readonly='1' widget='html'/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </group>
+                <footer>
+                    <button special="cancel" string="Cerrar" class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+    <record id="view_helpdesk_validaciones" model="ir.ui.view">
+        <field name="model">helpdesk.validacion.so</field>
+        <field name="arch" type="xml">
+            <form string="Validaciones">
+                <group>
+                    <group>
+                        <field name="ticketRelacion" readonly="1" />
+                    </group>
+                    <group>
+                        <field name="fechaDeValidacionSo" readonly="1" />
+                    </group>
+                </group>
+
+                <field name="refaccionesValidadas" readonly='1' widget='html' string='' />
+
+                <group>
+                    <group>
+                        <field name="listaRefaccionesValidadas" readonly="1" invisible='0' />
+                    </group>
+                    <group>
+                        <field name="listaIdsRefaccionesValidadas" readonly="1" invisible='0' />
+                    </group>
+                </group>
+
+                <footer>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</odoo>

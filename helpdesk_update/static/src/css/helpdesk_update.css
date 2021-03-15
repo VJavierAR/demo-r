@@ -1,0 +1,40 @@
+
+.iconDiagnostico {
+	font-size: 30px;
+}
+
+.btnConfirmaRefacciones {
+	background-color: #007bff;
+}
+
+.mesa_de_ayuda_tree_class [data-id="cambioEstadoAtencion"] {
+	width: 100px;
+}
+
+.mesa_de_ayuda_tree_class [data-id="datosCliente"] {
+	width: 100px;
+}
+
+.mesa_de_ayuda_tree_class [data-id="x_studio_ultima_nota"] {
+	width: 100px;
+}
+
+.mesa_de_ayuda_tree_class [data-id="datosCliente"] {
+	width: 1000px;
+}
+
+.modal-lg {
+    max-width: 90% !important;
+}
+
+/*
+.o_field_pdfviewer {
+	height: 600px;
+}
+*/
+
+/*
+.fa-user-md:hover {
+	font-size: 30px;
+}
+*/

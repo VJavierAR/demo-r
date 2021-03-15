@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_dca_editar_contadores" model="ir.ui.view">
+        <field name="model">contadores.dca.editar.contadores</field>
+        <field name="arch" type="xml">
+            <form string="Editar contadores">
+                <group>
+                    <group>
+                        <field name='dca_id' readonly='1' options="{'no_create_edit': True, 'no_create': True}" invisible='1' />
+                    </group>
+                </group>
+                
+                <group string='Datos del equipo'>
+                    <group>
+                        <field name='serieSeleccionada' readonly='1' />
+                        <field name='tipoEquipo' readonly='1' />
+                    </group>
+                </group>
+
+                <group string='Motivo por el que realiza el cambio'> 
+                    <group>
+                        <field name='estado' force_save='1' readonly='1' />
+                        <field name='comentario' force_save='1' />
+                    </group>
+                    <group>
+                        <field name='check' force_save='1' />
+                        <field name='evidencia' widget="many2many_binary" force_save='1' />
+                    </group>
+                </group>
+
+                <group string='Ingrese contadores a cambiar'>
+                    <group>
+                        <field name='contadorMonoActual' readonly='1' force_save='1' />
+                        <field name='contadorColorActual' readonly='1' force_save='1' attrs="{'invisible': [('tipoEquipo', '=', 'B/N')]}" />
+                    </group>
+                    <group>
+                        <field name='contadorMonoActualizado' force_save='1' />
+                        <field name='contadorColorActualizado' attrs="{'invisible': [('tipoEquipo', '=', 'B/N')]}" force_save='1' />
+                    </group>
+                </group>
+                <group> 
+                    <group>
+                        <field name='textoInformativo' force_save='1' readonly='1' widget='html' />
+                    </group>
+                </group>
+                <footer>
+                    <button name="actualizaContador" string="Actualizar contador" type="object" class="oe_highlight" />
+                    <button string="Cerrar ventana" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_dca_alerta" model="ir.ui.view">
+        <field name="model">contadores.dca.alerta</field>
+        <field name="arch" type="xml">
+            <form string="Alerta">
+                <group>
+                    <h3>
+                        <field name="mensaje" readonly='1'/>
+                    </h3>
+                </group>
+                <footer>
+                    <button special="cancel" string="Cerrar" class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_dca_reiniciar_contadores" model="ir.ui.view">
+        <field name="model">contadores.dca.reiniciar.contadores</field>
+        <field name="arch" type="xml">
+            <form string="Reiniciar contadores">
+
+                <group string='Datos del equipo'>
+                    <group>
+                        <field name='serieSeleccionada' readonly='1' />
+                        <field name='tipoEquipo' readonly='1' />
+                    </group>
+                </group>
+
+                <group string='Morivo por el que se reiniciara el contador'>
+                    <group>
+                        <field name='estado' force_save='1' readonly='1' />
+                        <field name='comentario' force_save='1' />
+                    </group>
+                    <group>
+                        <field name='check' force_save='1' />
+                        <field name='evidencia' widget="many2many_binary" force_save='1' />
+                    </group>
+                </group>
+
+                <group string='Contadores actuales y actualizados'>
+                    <group>
+                        <field name='contadorMonoActual' readonly='1' force_save='1' />
+                        <field name='contadorColorActual' readonly='1' force_save='1' attrs="{'invisible': [('tipoEquipo', '=', 'B/N')]}" />
+                    </group>
+                    <group>
+                        <field name='contadorMonoActualizado' force_save='1' />
+                        <field name='contadorColorActualizado' attrs="{'invisible': [('tipoEquipo', '=', 'B/N')]}" force_save='1' />
+                    </group>
+                </group>
+                <group> 
+                    <group>
+                        <field name='textoInformativo' force_save='1' readonly='1' widget='html' />
+                    </group>
+                </group>
+                <footer>
+                    <button name="reiniciarContadores" string="Reiniciar contador" type="object" class="oe_highlight" />
+                    <button special="cancel" string="Cerrar" class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+    
+
+
+
+
+</odoo>

@@ -1,0 +1,185 @@
+<odoo>
+  <data>
+  <report id="report_custom_purchase" string="Concentrado" model="purchase.order" report_type="qweb-pdf" name="compras.report_custom_purchase_template"/>
+  <template id="report_custom_purchase_template">
+        <t t-call="web.html_container">
+          <div class="header">
+            <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height: 45px;" alt="Logo"/>
+            <p t-field="res_company.name"/>
+            <p t-esc="datetime.datetime.now()"></p>
+        </div>
+            <div class="page">
+                <table class="table">
+                    <thead>
+                        <tr>Datos del Solicitante</tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label>Solicitante</label>
+                                <br></br>
+                                <strong t-field="docs[0].x_studio_solicita"></strong>
+                            </td>
+                            <td>
+                                <label>Area o C.C</label>
+                                <strong t-field="docs[0].x_studio_area_de_solicitud" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr>Datos del Beneficiario</tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label>Nombre o Razon Social</label>
+                                <br></br>
+                                <strong t-field="docs[0].partner_id.name"></strong>
+                            </td>
+                            <td>
+                                <label>Factura o Recibo</label>
+                                <br></br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong t-field="docs[0].x_studio_aplicacin.x_name"></strong></td>
+                            <td>
+                                <label>Cuenta Clave</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Banco:_Cuenta:_</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Area</th>
+                            <th>Fecha</th>
+                            <th>Factura</th>
+                            <th>Concepto</th>
+                            <th>Importe</th>
+                            <th>IVA</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <t t-set="a" t-value="0"/>
+                    <t t-set="b" t-value="0"/>
+                    <t t-set="c" t-value="0"/>
+                    <tbody>
+                        <t t-set="i" t-value="1"/>
+                        <tr t-foreach="docs" t-as="doc">
+                            <td>
+                                <span t-raw="i" />
+                            </td>
+                            <t t-set="i" t-value="i+1"/>
+                            <t t-set="a" t-value="a+doc.amount_untaxed"/>
+                            <t t-set="b" t-value="b+doc.amount_tax"/>
+                            <t t-set="c" t-value="c+doc.amount_total"/>
+                            <td>
+                                <span t-field="doc.x_studio_area_de_solicitud" />
+                            </td>
+                            <td>
+                                <span t-esc="datetime.datetime.now()- datetime.timedelta(hours=5)"/>
+                            </td>
+                            <td>
+                                <span t-field="doc.name" />
+                            </td>
+                            <td>
+                                <span t-field="doc.x_studio_concepto" />
+                            </td>
+                            <td width="100px">
+                                <span t-field="doc.amount_untaxed" />
+                            </td>
+                            <td width="100px">
+                                <span t-field="doc.amount_tax" />
+                            </td>
+                            <td width="100px">
+                                <span t-field="doc.amount_total" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div >
+                    <table class="table" width="50%">
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td width="100px" >$
+                                
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <span t-raw="a" t-esc-options="{'widget': 'monetary'}"></span>
+                                </td>
+                                <td  width="100px">$
+                                
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <span t-esc="b" t-esc-options="{'widget': 'monetary'}"></span>
+                                </td>
+                                <td   width="100px">$
+                                
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <span t-raw="c" t-esc-options="{'widget': 'monetary'}"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br></br>
+                <br></br>
+                <h5>
+                    <strong>____________________________________________</strong>
+                </h5>
+                <br></br>
+                <div align="left">
+                    <h5>
+                        <strong t-field="docs[0].partner_id.name"></strong>
+                    </h5>
+                </div>
+                <div align="right">
+                    <h5 >
+                        <strong>____________________________________________</strong>
+                    </h5>
+                </div>
+                <br></br>
+                <div align="right">
+                    <h5>
+                        <strong t-field="docs[0].x_studio_autoriza"></strong>
+                    </h5>
+                </div>
+                <br></br>
+                <div align="right" width="300px">
+                    <h6>Autoriza</h6>
+                </div>
+                <h5>
+                    <strong>____________________________________________</strong>
+                </h5>
+                <br></br>
+                <br></br>
+                <br></br>
+                <div align="left">
+                    <h5>
+                        <strong t-field="docs[0].x_studio_solicita"></strong>
+                    </h5>
+                </div>
+            </div>
+        </t>
+    </template>
+  </data>
+</odoo>

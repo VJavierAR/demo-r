@@ -1,0 +1,25 @@
+<odoo>
+    <data>
+<!--           <template id="assets_backend2" inherit_id="web.assets_backend" name="Custom Module2">
+            
+
+
+
+            <xpath expr="." positio="inside">
+            <script type="text/javascript">
+
+                odoo.define('web.csrf', function (require) {
+
+                    var token = "<t t-esc="request.csrf_token(None)"/>";
+
+                    require('web.core').csrf_token = token;
+
+                    require('qweb').default_dict.csrf_token = token;
+
+                });
+
+            </script>
+             </xpath>
+        </template> -->
+    </data>
+</odoo>

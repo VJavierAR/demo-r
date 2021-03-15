@@ -1,0 +1,20 @@
+<odoo>
+    <record id="view_tfs_ticket" model="ir.ui.view">
+        <!--<field name="name">tfs_ticket</field>-->
+        <field name="model">tfs.ticket</field>
+        <field name="arch" type="xml">
+            <form string="Alerta">
+                <group>
+                    <p>
+                        Seleccione alguna acción a relizar
+                    </p>
+                </group>
+                <footer>
+                    <button name="crear_ticket" string="Crear ticket" type="object" class="btn-primary"/>
+                    <button name="forzar" string="Confirmar" type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

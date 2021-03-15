@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="sale_order_compatibles.list">
+      <field name="name">sale_order_compatibles list</field>
+      <field name="model">sale_order_compatibles.sale_order_compatibles</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <record id="sale_order_compatibles_view_form" model="ir.ui.view">
+      <field name="name">sale_order_compatibles_form</field>
+      <field name="model">sale_order_compatibles</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <field name='estado' widget='statusbar'/>
+          </header>
+
+          <group>
+            <group name='Sale order'>
+              <field name="saleOrder" options="{'no_create_edit': True, 'no_create': True}"/>
+            </group>
+          </group>
+
+          <group>
+            <group name='Equipo'>
+              <field name="equipos" domain="[['categ_id.id', '=', 13]]" options="{'no_create_edit': True, 'no_create': True}"/>
+            </group>
+          </group>
+
+          <group>
+            <group name='Componenetes'>
+              <field name="componentes">
+                <tree editable="bottom">
+                  <field name="producto"/>
+                  <field name="cantidad"/>
+                  <field name="idProducto"/>
+                  
+                </tree>
+
+              </field>
+            </group>
+          </group>
+
+        </form>
+      </field>
+    </record>
+
+
+ <!--    <record model="ir.ui.view" id="sale_order_compatibles_mini_form">
+      <field name="name">sale_order_compatibles_mini_form</field>
+      <field name="model">sale_order_compatibles_mini</field>
+      <field name="arch" type="xml">
+        <form>
+          <header> -->
+            <!--<field name='estado' widget='statusbar'/>-->
+ <!--          </header>
+
+          <group>
+            <group name='Sale order'>
+              <field name="idProducto"/>
+            </group>
+          </group>
+
+          <group>
+            <group name='Producto y cantidad'>
+              <field name="producto" domain='["categ_id.id", "=", 13]' options="{'no_create_edit': True, 'no_create': True}"/>
+              
+            </group>
+            <group>
+              <field name="cantidad" />
+            </group>
+          </group>
+
+        </form>
+      </field>
+    </record>
+
+ -->
+<!--     <record model="ir.ui.view" id="sale_order_compatibles_mini_tree">
+      <field name="name">sale_order_compatibles_mini.form</field>
+      <field name="model">sale_order_compatibles_mini</field>
+      <field name="arch" type="xml">
+        <tree>
+          
+          <field name="idProducto"/>
+          <field name="producto" domain='["categ_id.id", "=", 13]'/>
+          <field name="cantidad" />
+
+        </tree>
+      </field>
+    </record>
+ -->
+
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="sale_order_compatibles.action_window">
+      <field name="name">sale_order_compatibles window</field>
+      <field name="res_model">sale_order_compatibles.sale_order_compatibles</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="sale_order_compatibles.action_server">
+      <field name="name">sale_order_compatibles server</field>
+      <field name="model_id" ref="model_sale_order_compatibles_sale_order_compatibles"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="sale_order_compatibles" id="sale_order_compatibles.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="sale_order_compatibles.menu_1" parent="sale_order_compatibles.menu_root"/>
+    <menuitem name="Menu 2" id="sale_order_compatibles.menu_2" parent="sale_order_compatibles.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="sale_order_compatibles.menu_1_list" parent="sale_order_compatibles.menu_1"
+              action="sale_order_compatibles.action_window"/>
+    <menuitem name="Server to list" id="sale_order_compatibles" parent="sale_order_compatibles.menu_2"
+              action="sale_order_compatibles.action_server"/>
+    -->
+  </data>
+</odoo>
