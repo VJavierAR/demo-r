@@ -92,5 +92,12 @@ class StockMoveLine(Model):
 
     x_studio_almacen = fields.Char(related='location_id.x_studio_field_JoD2k.display_name', string='Almacen')
 
+class StockInvetoriLine(Model):
+    _inherit='stock.inventory.line'
+    x_studio_field_yVDjd=fields.Many2one('x_ubicacion_inventario')
 
+
+class UbicacionInv(Model):
+    _name='x_ubicacion_inventario'
+    x_name=fields.Char()
 
