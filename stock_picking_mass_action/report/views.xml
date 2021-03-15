@@ -1,6 +1,5 @@
 <odoo>
   <data>
-  <data noupdate="1">
     <record id="seq_concentrado" model="ir.sequence">
       <field name="name">concentrado</field>
       <field name="code">concentrado</field>
