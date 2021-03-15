@@ -29,7 +29,7 @@
     'data': [
         'security/ir.model.access.csv',
         'security/helpdesk_security.xml',
-        'views/views.xml',
+        #'views/views.xml',
         'views/templates.xml',
         #'wizard/wizard.xml'
     ],
