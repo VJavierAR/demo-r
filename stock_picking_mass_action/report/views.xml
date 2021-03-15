@@ -276,5 +276,77 @@
         </div>
       </t>
     </template>
+
+    <report id="studio_customization.transferir_reporte_4541ad13-9ccb-4a0f-9758-822064db7c9a" string="Etiquetas" model="stock.picking" report_type="qweb-pdf" name="stock_picking_mass_action.report_custom_template"/>
+    <template>
+    <t t-name="studio_main_report">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="studio_customization.studio_report_docume_16d98cc0-fa92-4a4b-b6fc-6e79e13845a0_document"/></t>
+        </t>
+        </t>
+    </template>
+
+
+    <template>
+        <t t-name="studio_report_document">
+    <div>
+        <t t-set="norep" t-value="0"/>
+        <t t-set="i" t-value="1"/>
+        <t style="width:100%" t-foreach="doc.move_ids_without_package" t-as="move">
+            <t t-set="a" t-value="int(move.product_qty)"/>
+            <t t-set="norep" t-value="norep + a"/></t>
+        <t t-foreach="doc.move_ids_without_package" t-as="pick">
+            <t t-if="(pick.picking_id.picking_type_id.id==3 or pick.picking_id.picking_type_id.id==29314 or pick.picking_id.picking_type_id.id==89) and pick.state=='done'">
+                <t t-foreach="range(int(pick.product_qty))" t-as="l">
+                    <table style= "height:170px;  WIDTH:100%; ">
+                        <tr>
+                            <td>
+                                <t t-if="doc.sale_id.origin!=False">
+                                    <strong t-field="doc.sale_id.origin"/>
+                                </t>
+                                <t t-if="doc.sale_id.origin==False">
+                                    <strong t-field="doc.origin"/>
+                                </t>
+                            </td>
+                            <td>
+                                <span t-esc="i"/>/
+                                <span  t-esc="norep"/>
+                            </td>
+                            <td align="right">
+                                <span>Destino</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span t-field="doc.partner_id.display_name"/>
+                            </td>
+                            <td></td>
+                            <td align="right">
+                                <t t-if="doc.partner_id.state_id.code=='DIF'">
+                                    <strong>Local</strong>
+                                </t>
+                                <t t-elif="doc.partner_id.state_id.code!='DIF'">
+                                    <strong t-field="doc.partner_id.state_id.code"/>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td >
+                                <span>Modelo :</span>
+                                <strong t-field="pick.product_id.name"/>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <t t-set="i" t-value="i+1"/>
+                    </table>
+                </t>
+            </t>
+        </t>
+    </div>
+</t>
+    </template>
+
+
   </data>
 </odoo>
